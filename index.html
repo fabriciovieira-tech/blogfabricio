@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serra Tecnologia | Blog do Fabricio Vieira</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #060613; }
+        #webgl-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        .neon-glow-text { text-shadow: 0 0 20px rgba(34, 211, 238, 0.4), 0 0 40px rgba(34, 211, 238, 0.2); }
+        @keyframes floatLaptop { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+        @keyframes floatCoffee { 0%, 100% { transform: translateY(0px) translateX(0px) rotate(0deg); } 50% { transform: translateY(-18px) translateX(-4px) rotate(-6deg); } }
+        @keyframes floatParticles { 0%, 100% { opacity: 0.3; transform: translateY(0px) scale(0.9); } 50% { opacity: 1; transform: translateY(-15px) scale(1.1); } }
+        .anim-laptop { animation: floatLaptop 6s ease-in-out infinite; }
+        .anim-coffee { animation: floatCoffee 5s ease-in-out infinite; }
+        .anim-particle-1 { animation: floatParticles 4s ease-in-out infinite; }
+        .anim-particle-2 { animation: floatParticles 4.5s ease-in-out infinite; animation-delay: 1s; }
+        .anim-particle-3 { animation: floatParticles 3.5s ease-in-out infinite; animation-delay: 0.5s; }
+    </style>
+</head>
+<body class="text-slate-100 min-h-screen relative overflow-x-hidden selection:bg-indigo-500/30">
+
+    <canvas id="webgl-canvas"></canvas>
+
+    <div id="main-view" class="w-full">
+        <header class="w-full max-w-7xl mx-auto px-6 py-6 flex justify-between items-center bg-transparent z-50 relative">
+            <div class="text-sm font-bold tracking-[0.2em] text-indigo-400 uppercase cursor-pointer" onclick="goToHome()">
+                SERRA TECNOLOGIA
+            </div>
+            <nav class="flex gap-8 text-sm font-medium text-slate-400">
+                <a href="#projetos" class="hover:text-white transition-colors duration-300">Projetos</a>
+                <button onclick="openView('#catalogo-artigos-view')" class="hover:text-white transition-colors duration-300 cursor-pointer">Artigos</button>
+                <a href="#contato" class="hover:text-white transition-colors duration-300">Contato</a>
+            </nav>
+        </header>
+
+        <section class="min-h-[85vh] flex flex-col justify-center items-center text-center px-4 relative z-10">
+            <div class="w-[180px] h-[180px] mb-2 flex items-center justify-center filter drop-shadow-[0_0_35px_rgba(139,92,246,0.35)]">
+                <svg viewBox="0 0 200 200" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="screenGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8b5cf6" /><stop offset="100%" stop-color="#ec4899" /></linearGradient>
+                        <linearGradient id="baseGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2e1065" /><stop offset="100%" stop-color="#0f052d" /></linearGradient>
+                    </defs>
+                    <g class="anim-particle-1"><rect x="60" y="50" width="8" height="8" rx="2" fill="#22d3ee" opacity="0.8" transform="rotate(15 60 50)"/></g>
+                    <g class="anim-particle-2"><circle cx="145" cy="65" r="4" fill="#ec4899" opacity="0.7"/></g>
+                    <g class="anim-particle-3"><path d="M110 35 L116 45 L104 45 Z" fill="#a78bfa" opacity="0.6" transform="rotate(45 110 35)"/></g>
+                    <g class="anim-laptop">
+                        <path d="M40 130 L100 160 L160 130 L100 100 Z" fill="url(#baseGrad)" stroke="#4c1d95" stroke-width="2"/>
+                        <path d="M55 127 L100 150 L145 127 L100 105 Z" fill="#1e1b4b" opacity="0.8"/>
+                        <path d="M90 143 L100 148 L110 143 L100 138 Z" fill="#22d3ee" opacity="0.7"/>
+                        <path d="M60 105 L60 65 L100 45 L100 85 Z" fill="#4c1d95" opacity="0.5"/>
+                        <path d="M100 85 L100 45 L140 65 L140 105 Z" fill="url(#screenGrad)"/>
+                        <path d="M108 56 L132 68" stroke="#22d3ee" stroke-width="3" stroke-linecap="round" opacity="0.9"/>
+                        <path d="M108 68 L124 76" stroke="#ffffff" stroke-width="3" stroke-linecap="round" opacity="0.8"/>
+                        <path d="M108 80 L132 92" stroke="#22d3ee" stroke-width="3" stroke-linecap="round" opacity="0.9"/>
+                    </g>
+                    <g class="anim-coffee">
+                        <path d="M45 85 C45 78 57 78 57 85 L54 100 C54 104 48 104 48 100 Z" fill="#ec4899"/>
+                        <path d="M45 88 C40 88 40 96 45 96" stroke="#ec4899" stroke-width="2" fill="none"/>
+                        <path d="M48 73 Q50 68 47 65 T51 58" stroke="#22d3ee" stroke-width="1.5" stroke-linecap="round" opacity="0.8"/>
+                        <path d="M53 75 Q55 70 52 67 T56 60" stroke="#a78bfa" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+                    </g>
+                </svg>
+            </div>
+            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-4 text-slate-100">
+                Blog do <span class="text-cyan-400 neon-glow-text">Fabricio Vieira</span>
+            </h1>
+            <p class="text-slate-400 max-w-xl text-base md:text-lg font-light leading-relaxed mb-8">
+                Catálogo de projetos web dinâmicos, experimentos visuais e artigos técnicos.
+            </p>
+            <a href="#projetos" class="px-8 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white rounded-full font-medium transition-all duration-300 shadow-[0_0_25px_rgba(99,102,241,0.4)] hover:shadow-[0_0_35px_rgba(99,102,241,0.6)] transform hover:-translate-y-0.5">
+                Ver Projetos
+            </a>
+        </section>
+
+        <section id="projetos" class="max-w-7xl mx-auto px-6 py-24 z-10 relative">
+            <div class="mb-12">
+                <h2 class="text-2xl md:text-3xl font-bold text-white mb-2">Projetos recentes</h2>
+                <p class="text-slate-400 font-light">Aplicações web dinâmicas integradas a esta subpágina.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div onclick="openView('#dashboard-view')" class="bg-[#0f0f23]/60 border border-slate-800/60 rounded-2xl p-6 backdrop-blur-md hover:border-indigo-500/40 transition-all duration-500 group flex flex-col justify-between cursor-pointer transform hover:-translate-y-1">
+                    <div>
+                        <div class="w-full h-48 bg-[#0a0a16] rounded-xl flex items-center justify-center text-slate-600 border border-slate-900 mb-6 font-mono text-sm group-hover:text-slate-400 transition-colors">[ preview_do_projeto_1 ]</div>
+                        <span class="text-xs font-semibold tracking-wider text-pink-500 uppercase block mb-1">WEB APP / API</span>
+                        <h3 class="text-xl font-bold text-white mb-3 group-hover:text-cyan-300 transition-colors flex justify-between items-center">
+                            Dashboard Financeiro Dinâmico
+                            <span class="text-xs text-indigo-400 font-normal group-hover:underline">Ver Detalhes →</span>
+                        </h3>
+                        <p class="text-slate-400 font-light text-sm leading-relaxed mb-6">Interface reativa com manipulação de gráficos em tempo real, consumo de dados assíncronos e arquitetura modular.</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <span class="text-xs font-medium px-3 py-1 bg-slate-900 border border-slate-800 text-slate-300 rounded-md">Vue.js</span>
+                        <span class="text-xs font-medium px-3 py-1 bg-slate-900 border border-slate-800 text-slate-300 rounded-md">Chart.js</span>
+                    </div>
+                </div>
+
+                <div class="bg-[#0f0f23]/60 border border-slate-800/60 rounded-2xl p-6 backdrop-blur-md hover:border-indigo-500/40 transition-all duration-500 group flex flex-col justify-between opacity-80 hover:opacity-100">
+                    <div>
+                        <div class="w-full h-48 bg-[#0a0a16] rounded-xl flex items-center justify-center text-slate-600 border border-slate-900 mb-6 font-mono text-sm group-hover:text-slate-400 transition-colors">[ preview_do_projeto_2 ]</div>
+                        <span class="text-xs font-semibold tracking-wider text-purple-400 uppercase block mb-1">E-COMMERCE / UI</span>
+                        <h3 class="text-xl font-bold text-white mb-3 group-hover:text-cyan-300 transition-colors">Experiência Imersiva de Produto</h3>
+                        <p class="text-slate-400 font-light text-sm leading-relaxed mb-6">Otimização de renderização asset-heavy com foco em Core Web Vitals e transições de estado ultra suaves.</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <span class="text-xs font-medium px-3 py-1 bg-slate-900 border border-slate-800 text-slate-300 rounded-md">Next.js</span>
+                        <span class="text-xs font-medium px-3 py-1 bg-slate-900 border border-slate-800 text-slate-300 rounded-md">Tailwind</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="max-w-7xl mx-auto px-6 py-12 z-10 relative">
+            <div class="mb-12 flex justify-between items-end">
+                <div>
+                    <h2 class="text-2xl md:text-3xl font-bold text-white mb-2">Artigos Recentes</h2>
+                    <p class="text-slate-400 font-light">Os últimos insights sobre desenvolvimento front-end.</p>
+                </div>
+                <button onclick="openView('#catalogo-artigos-view')" class="text-sm font-semibold text-cyan-400 hover:text-cyan-300 transition-colors underline cursor-pointer">Ver catálogo completo →</button>
+            </div>
+            
+            <div class="flex flex-col gap-4">
+                <div onclick="carregarEAbriArtigo('Minha transformação com a experiência na plataforma da DIO', '26 de Junho, 2026', 'Carreira', 'artigos/artigo-dio.html')" class="flex flex-col sm:flex-row sm:items-center justify-between p-6 bg-[#0f0f23]/40 border border-slate-900 hover:border-slate-800 rounded-xl hover:bg-[#12122b]/50 transition-all duration-300 group cursor-pointer">
+                    <div>
+                        <span class="text-xs font-medium text-slate-500 block mb-1">26 de Junho, 2026</span>
+                        <h4 class="text-base md:text-lg font-medium text-slate-200 group-hover:text-white transition-colors">Minha transformação com a experiência na plataforma da DIO</h4>
+                    </div>
+                    <div class="mt-4 sm:mt-0"><span class="text-xs font-medium px-3 py-1 bg-emerald-950/40 border border-emerald-900/50 text-emerald-300 rounded-full">Carreira</span></div>
+                </div>
+
+                <div onclick="carregarEAbriArtigo('Opinião: Em 2026, ainda vale a pena fazer a certificação Microsoft azure fundamentals?', '25 de Junho, 2026', 'Certificações', 'artigos/artigo-azure.html')" class="flex flex-col sm:flex-row sm:items-center justify-between p-6 bg-[#0f0f23]/40 border border-slate-900 hover:border-slate-800 rounded-xl hover:bg-[#12122b]/50 transition-all duration-300 group cursor-pointer">
+                    <div>
+                        <span class="text-xs font-medium text-slate-500 block mb-1">25 de Junho, 2026</span>
+                        <h4 class="text-base md:text-lg font-medium text-slate-200 group-hover:text-white transition-colors">Opinião: Em 2026, ainda vale a pena fazer a certificação Microsoft azure fundamentals?</h4>
+                    </div>
+                    <div class="mt-4 sm:mt-0"><span class="text-xs font-medium px-3 py-1 bg-blue-950/40 border border-blue-900/50 text-blue-300 rounded-full">Certificações</span></div>
+                </div>
+            </div>
+        </section>
+
+        <footer id="contato" class="w-full max-w-7xl mx-auto px-6 py-12 border-t border-slate-900 text-center text-xs text-slate-500 z-10 relative">
+            <p>© 2026 Fabricio Vieira. Seu foco em alta performance e design responsivo.</p>
+        </footer>
+    </div>
+
+    <div id="dashboard-view" class="subpage-view w-full hidden opacity-0 z-20 relative">
+        <div class="w-full max-w-4xl mx-auto px-6 py-12">
+            <button onclick="closeSubpage()" class="text-xs font-semibold text-slate-400 hover:text-white transition-colors duration-300 mb-8 flex items-center gap-2 group cursor-pointer">
+                <span class="transform group-hover:-translate-x-1 transition-transform">←</span> Voltar para a Home
+            </button>
+            <div class="border-b border-slate-900 pb-8 mb-8">
+                <span class="text-xs font-semibold tracking-wider text-pink-500 uppercase block mb-2">Caso de Estudo / Documentação</span>
+                <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-4">Dashboard Financeiro Dinâmico</h2>
+                <div class="flex gap-2">
+                    <span class="text-xs font-medium px-3 py-1 bg-[#0f0f23] border border-slate-800 text-slate-300 rounded-md">Vue.js</span>
+                    <span class="text-xs font-medium px-3 py-1 bg-[#0f0f23] border border-slate-800 text-slate-300 rounded-md">Chart.js</span>
+                </div>
+            </div>
+            <p class="text-slate-300 font-light leading-relaxed">Este projeto foi projetado para transformar dados brutos...</p>
+        </div>
+    </div>
+
+    <div id="catalogo-artigos-view" class="subpage-view w-full hidden opacity-0 z-20 relative">
+        <div class="w-full max-w-4xl mx-auto px-6 py-12">
+            <button onclick="closeSubpage()" class="text-xs font-semibold text-slate-400 hover:text-white transition-colors duration-300 mb-8 flex items-center gap-2 group cursor-pointer">
+                <span class="transform group-hover:-translate-x-1 transition-transform">←</span> Voltar para a Home
+            </button>
+
+            <div class="border-b border-slate-900 pb-6 mb-12">
+                <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-2">Acervo de Artigos</h2>
+                <p class="text-slate-400 font-light">Todas as publicações técnicas, tutorias e ensaios sobre arquitetura de software.</p>
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <div onclick="carregarEAbriArtigo('Minha transformação com a experiência na plataforma da DIO', '26 de Junho, 2026', 'Carreira', 'artigos/artigo-dio.html')" class="flex flex-col sm:flex-row sm:items-center justify-between p-6 bg-[#0f0f23]/30 border border-slate-900/60 hover:border-slate-800 rounded-xl hover:bg-[#12122b]/40 transition-all duration-300 group cursor-pointer">
+                    <div><span class="text-xs font-medium text-slate-500 block mb-1">26 de Junho, 2026</span><h4 class="text-base font-medium text-slate-200 group-hover:text-cyan-400 transition-colors">Minha transformação com a experiência na plataforma da DIO</h4></div>
+                    <div class="mt-2 sm:mt-0"><span class="text-xs font-medium px-3 py-1 bg-emerald-950/40 border border-emerald-900/50 text-emerald-300 rounded-full">Carreira</span></div>
+                </div>
+
+                <div onclick="carregarEAbriArtigo('Opinião: Em 2026, ainda vale a pena fazer a certificação Microsoft azure fundamentals?', '25 de Junho, 2026', 'Certificações', 'artigos/artigo-azure.html')" class="flex flex-col sm:flex-row sm:items-center justify-between p-6 bg-[#0f0f23]/30 border border-slate-900/60 hover:border-slate-800 rounded-xl hover:bg-[#12122b]/40 transition-all duration-300 group cursor-pointer">
+                    <div><span class="text-xs font-medium text-slate-500 block mb-1">25 de Junho, 2026</span><h4 class="text-base font-medium text-slate-200 group-hover:text-cyan-400 transition-colors">Opinião: Em 2026, ainda vale a pena fazer a certificação Microsoft azure fundamentals?</h4></div>
+                    <div class="mt-2 sm:mt-0"><span class="text-xs font-medium px-3 py-1 bg-blue-950/40 border border-blue-900/50 text-blue-300 rounded-full">Certificações</span></div>
+                </div>
+
+                <div onclick="carregarEAbriArtigo('Otimizando a taxa de quadros (FPS) em animações Three.js complexas', '15 de Março, 2026', 'Performance', 'artigos/artigo-threejs.html')" class="flex flex-col sm:flex-row sm:items-center justify-between p-6 bg-[#0f0f23]/30 border border-slate-900/60 hover:border-slate-800 rounded-xl hover:bg-[#12122b]/40 transition-all duration-300 group cursor-pointer">
+                    <div><span class="text-xs font-medium text-slate-500 block mb-1">15 de Março, 2026</span><h4 class="text-base font-medium text-slate-200 group-hover:text-cyan-400 transition-colors">Otimizando a taxa de quadros (FPS) em animações Three.js complexas</h4></div>
+                    <div class="mt-2 sm:mt-0"><span class="text-xs font-medium px-3 py-1 bg-indigo-950/40 border border-indigo-900/50 text-indigo-300 rounded-full">Performance</span></div>
+                </div>
+                
+                <div onclick="carregarEAbriArtigo('Boas Práticas para Estruturação de Subpáginas e Micro-Frontends', '02 de Fevereiro, 2026', 'Arquitetura', 'artigos/artigo-arquitetura.html')" class="flex flex-col sm:flex-row sm:items-center justify-between p-6 bg-[#0f0f23]/30 border border-slate-900/60 hover:border-slate-800 rounded-xl hover:bg-[#12122b]/40 transition-all duration-300 group cursor-pointer">
+                    <div><span class="text-xs font-medium text-slate-500 block mb-1">02 de Fevereiro, 2026</span><h4 class="text-base font-medium text-slate-200 group-hover:text-cyan-400 transition-colors">Boas Práticas para Estruturação de Subpáginas e Micro-Frontends</h4></div>
+                    <div class="mt-2 sm:mt-0"><span class="text-xs font-medium px-3 py-1 bg-purple-950/40 border border-purple-900/50 text-purple-300 rounded-full">Arquitetura</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="artigo-viewer-view" class="subpage-view w-full hidden opacity-0 z-20 relative">
+        <div class="w-full max-w-3xl mx-auto px-6 py-12">
+            <button onclick="openView('#catalogo-artigos-view')" class="text-xs font-semibold text-slate-400 hover:text-white transition-colors duration-300 mb-8 flex items-center gap-2 group cursor-pointer">
+                <span class="transform group-hover:-translate-x-1 transition-transform">←</span> Voltar para o Catálogo
+            </button>
+
+            <div class="border-b border-slate-900 pb-6 mb-8">
+                <span id="view-artigo-tag" class="text-xs font-semibold tracking-wider text-cyan-400 uppercase block mb-2">Categoria</span>
+                <h2 id="view-artigo-titulo" class="text-3xl md:text-4xl font-extrabold text-white mb-4">Título do Artigo</h2>
+                <span id="view-artigo-data" class="text-xs text-slate-500">Data de Publicação</span>
+            </div>
+
+            <div id="view-artigo-content" class="space-y-8 text-slate-300 font-light leading-relaxed">
+                <p class="text-slate-500 italic animate-pulse">Carregando conteúdo do artigo...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <script>
+        let currentActiveView = null;
+        let previousViewsStack = []; // Pilha para histórico de navegação interna se necessário
+
+        function openView(viewSelector) {
+            window.scrollTo({ top: 0, behavior: 'instant' });
+            
+            let currentView = currentActiveView || "#main-view";
+            currentActiveView = viewSelector;
+            
+            gsap.to(currentView, { 
+                opacity: 0, 
+                duration: 0.3, 
+                onComplete: () => {
+                    document.getElementById(currentView.replace('#','')).classList.add("hidden");
+                    const targetView = document.querySelector(viewSelector);
+                    targetView.classList.remove("hidden");
+                    gsap.to(viewSelector, { opacity: 1, duration: 0.3 });
+                }
+            });
+        }
+
+        function closeSubpage() {
+            if (!currentActiveView) return;
+            openView('#main-view');
+            currentActiveView = null;
+        }
+
+        function goToHome() {
+            closeSubpage();
+        }
+
+        // --- CARREGADOR DINÂMICO VIA FETCH API ---
+        function carregarEAbriArtigo(titulo, data, categoria, urlArquivo) {
+            // 1. Atualiza os metadados do container leitor imediatamente
+            document.getElementById('view-artigo-titulo').innerText = titulo;
+            document.getElementById('view-artigo-data').innerText = `Publicado em ${data}`;
+            document.getElementById('view-artigo-tag').innerText = categoria;
+            
+            const contentBox = document.getElementById('view-artigo-content');
+            contentBox.innerHTML = `<p class="text-slate-500 italic animate-pulse">Buscando artigo nos arquivos...</p>`;
+
+            // 2. Faz a requisição assíncrona do fragmento HTML do artigo
+            fetch(urlArquivo)
+                .then(response => {
+                    if (!response.ok) throw new Error('Artigo não encontrado.');
+                    return response.text();
+                })
+                .then(htmlConteudo => {
+                    // Injeta o texto no container limpo
+                    contentBox.innerHTML = htmlConteudo;
+                })
+                .catch(err => {
+                    contentBox.innerHTML = `<p class="text-red-400">Erro ao carregar o artigo. Verifique se o arquivo '${urlArquivo}' existe na pasta correta.</p>`;
+                });
+
+            // 3. Executa a transição visual do GSAP para o Viewer
+            openView('#artigo-viewer-view');
+        }
+
+        // --- CONFIGURAÇÃO THREE.JS (Fundo Interestelar) ---
+        const canvas = document.querySelector('#webgl-canvas');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 5;
+
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 350; 
+        const posArray = new Float32Array(particlesCount * 3);
+        for(let i = 0; i < particlesCount * 3; i++) { posArray[i] = (Math.random() - 0.5) * 12; }
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.025, color: 0x818cf8, transparent: true, opacity: 0.7, blending: THREE.AdditiveBlending
+        });
+
+        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particlesMesh);
+
+        const clock = new THREE.Clock();
+        const animate = () => {
+            const elapsedTime = clock.getElapsedTime();
+            particlesMesh.rotation.y = elapsedTime * 0.02;
+            particlesMesh.rotation.x = elapsedTime * 0.01;
+            renderer.render(scene, camera);
+            requestAnimationFrame(animate);
+        };
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
