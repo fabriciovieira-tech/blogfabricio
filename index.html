@@ -115,6 +115,7 @@
             </div>
         </section>
 
+        <!-- SEÇÃO: ARTIGOS RECENTES -->
         <section class="max-w-7xl mx-auto px-6 py-12 z-10 relative">
             <div class="mb-12 flex justify-between items-end">
                 <div>
@@ -125,7 +126,7 @@
             </div>
             
             <div class="flex flex-col gap-4">
-                <!-- Novo artigo Termux -->
+                <!-- ARTIGO TERMUX INSERIDO NO TOPO DA HOME -->
                 <div onclick="carregarEAbriArtigo('Termux no Android: Seu Primeiro Passo para o Linux no Celular', '18 de Julho, 2026', 'Tutorial', 'artigos/artigo-termux.html')" class="flex flex-col sm:flex-row sm:items-center justify-between p-6 bg-[#0f0f23]/40 border border-slate-900 hover:border-slate-800 rounded-xl hover:bg-[#12122b]/50 transition-all duration-300 group cursor-pointer">
                     <div>
                         <span class="text-xs font-medium text-slate-500 block mb-1">18 de Julho, 2026</span>
@@ -174,6 +175,7 @@
         </div>
     </div>
 
+    <!-- VIEW: CATÁLOGO COMPLETO -->
     <div id="catalogo-artigos-view" class="subpage-view w-full hidden opacity-0 z-20 relative">
         <div class="w-full max-w-4xl mx-auto px-6 py-12">
             <button onclick="closeSubpage()" class="text-xs font-semibold text-slate-400 hover:text-white transition-colors duration-300 mb-8 flex items-center gap-2 group cursor-pointer">
@@ -186,7 +188,7 @@
             </div>
 
             <div class="flex flex-col gap-4">
-                <!-- Novo artigo Termux no Catálogo Completo -->
+                <!-- ARTIGO TERMUX INSERIDO NO TOPO DO CATÁLOGO COMPLETO -->
                 <div onclick="carregarEAbriArtigo('Termux no Android: Seu Primeiro Passo para o Linux no Celular', '18 de Julho, 2026', 'Tutorial', 'artigos/artigo-termux.html')" class="flex flex-col sm:flex-row sm:items-center justify-between p-6 bg-[#0f0f23]/30 border border-slate-900/60 hover:border-slate-800 rounded-xl hover:bg-[#12122b]/40 transition-all duration-300 group cursor-pointer">
                     <div><span class="text-xs font-medium text-slate-500 block mb-1">18 de Julho, 2026</span><h4 class="text-base font-medium text-slate-200 group-hover:text-cyan-400 transition-colors">Termux no Android: Seu Primeiro Passo para o Linux no Celular</h4></div>
                     <div class="mt-2 sm:mt-0"><span class="text-xs font-medium px-3 py-1 bg-cyan-950/40 border border-cyan-900/50 text-cyan-300 rounded-full">Tutorial</span></div>
@@ -268,9 +270,7 @@
             closeSubpage();
         }
 
-        // --- CARREGADOR DINÂMICO VIA FETCH API ---
         function carregarEAbriArtigo(titulo, data, categoria, urlArquivo) {
-            // 1. Atualiza os metadados do container leitor imediatamente
             document.getElementById('view-artigo-titulo').innerText = titulo;
             document.getElementById('view-artigo-data').innerText = `Publicado em ${data}`;
             document.getElementById('view-artigo-tag').innerText = categoria;
@@ -278,25 +278,21 @@
             const contentBox = document.getElementById('view-artigo-content');
             contentBox.innerHTML = `<p class="text-slate-500 italic animate-pulse">Buscando artigo nos arquivos...</p>`;
 
-            // 2. Faz a requisição assíncrona do fragmento HTML do artigo
             fetch(urlArquivo)
                 .then(response => {
                     if (!response.ok) throw new Error('Artigo não encontrado.');
                     return response.text();
                 })
                 .then(htmlConteudo => {
-                    // Injeta o texto no container limpo
                     contentBox.innerHTML = htmlConteudo;
                 })
                 .catch(err => {
                     contentBox.innerHTML = `<p class="text-red-400">Erro ao carregar o artigo. Verifique se o arquivo '${urlArquivo}' existe na pasta correta.</p>`;
                 });
 
-            // 3. Executa a transição visual do GSAP para o Viewer
             openView('#artigo-viewer-view');
         }
 
-        // --- CONFIGURAÇÃO THREE.JS (Fundo Interestelar) ---
         const canvas = document.querySelector('#webgl-canvas');
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
