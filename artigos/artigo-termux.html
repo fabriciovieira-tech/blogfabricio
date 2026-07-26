@@ -1,0 +1,57 @@
+<p class="text-slate-300 font-light leading-relaxed text-lg mb-6">
+    Já pensou em transformar seu smartphone Android em uma central de desenvolvimento completa, capaz de rodar scripts, servidores e ferramentas de linha de comando sem precisar de acesso *root*? É exatamente isso que o <strong>Termux</strong> oferece.
+</p>
+
+<h3 class="text-xl font-bold text-white mt-8 mb-4">O que é o Termux?</h3>
+<p class="text-slate-300 font-light leading-relaxed mb-4">
+    O Termux é um emulador de terminal com um ambiente Linux completo embarcado para dispositivos Android. Ao contrário de outros aplicativos que exigem modificações avançadas no sistema (root), o Termux roda de forma isolada e segura como qualquer aplicativo comum.
+</p>
+<p class="text-slate-300 font-light leading-relaxed mb-6">
+    Ele permite que você instale linguagens de programação como Python, Node.js, Ruby, C/C++, além de utilitários clássicos do ecossistema Linux via seu próprio gerenciador de pacotes (`pkg` ou `apt`).
+</p>
+
+<!-- Imagem 1: Interface do Termux -->
+<div class="my-8">
+    <div class="rounded-xl overflow-hidden border border-slate-800 bg-[#0a0a16] p-2">
+        <img src="https://images.unsplash.com/photo-1629654297299-c8506221ca97?auto=format&fit=crop&w=1000&q=80" 
+             alt="Interface do Terminal de Linha de Comando" 
+             class="w-full h-auto rounded-lg opacity-90 hover:opacity-100 transition-opacity" />
+    </div>
+    <span class="text-xs text-slate-500 mt-2 block text-center italic">Ambiente de linha de comando interativo do Termux rodando no Android</span>
+</div>
+
+<h3 class="text-xl font-bold text-white mt-8 mb-4">Como instalar de forma segura</h3>
+<p class="text-slate-300 font-light leading-relaxed mb-4">
+    Um detalhe crucial para iniciantes: <strong>não instale o Termux pela Google Play Store</strong>. A versão presente na Play Store está desatualizada devido a restrições de API do Android.
+</p>
+<p class="text-slate-300 font-light leading-relaxed mb-6">
+    A maneira oficial e recomendada para baixar a versão mais recente é através do repositório <strong>F-Droid</strong> (uma loja alternativa de código aberto) ou diretamente na página oficial do projeto no GitHub.
+</p>
+
+<!-- Imagem 2: Programando no Smartphone -->
+<div class="my-8">
+    <div class="rounded-xl overflow-hidden border border-slate-800 bg-[#0a0a16] p-2">
+        <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1000&q=80" 
+             alt="Código sendo executado em tela escura" 
+             class="w-full h-auto rounded-lg opacity-90 hover:opacity-100 transition-opacity" />
+    </div>
+    <span class="text-xs text-slate-500 mt-2 block text-center italic">Execução de scripts e automações em dispositivos móveis</span>
+</div>
+
+<h3 class="text-xl font-bold text-white mt-8 mb-4">Primeiros Passos Básicos</h3>
+<p class="text-slate-300 font-light leading-relaxed mb-4">
+    Assim que abrir o aplicativo pela primeira vez, você estará diante de uma tela preta com texto. Aqui estão os três primeiros comandos para você começar:
+</p>
+
+<ul class="list-disc list-inside space-y-3 text-slate-300 font-light mb-8">
+    <li><strong class="text-cyan-400">pkg update && pkg upgrade:</strong> Atualiza a lista de pacotes e os programas instalados para as versões mais recentes.</li>
+    <li><strong class="text-cyan-400">pkg install python:</strong> Instala o interpretador Python diretamente no seu celular em instantes.</li>
+    <li><strong class="text-cyan-400">termux-setup-storage:</strong> Concede permissão para o Termux acessar a memória do celular, permitindo salvar ou ler arquivos da sua galeria/downloads.</li>
+</ul>
+
+<div class="p-6 bg-[#0f0f23]/80 border border-indigo-900/40 rounded-xl my-6">
+    <h4 class="text-indigo-400 font-semibold mb-2">💡 Dica para iniciantes</h4>
+    <p class="text-slate-400 text-sm font-light">
+        Você pode conectar um teclado Bluetooth ao celular para ter uma experiência de digitação idêntica à de um computador portátil!
+    </p>
+</div>
