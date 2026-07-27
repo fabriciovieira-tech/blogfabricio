@@ -21,6 +21,22 @@
         .anim-particle-1 { animation: floatParticles 4s ease-in-out infinite; }
         .anim-particle-2 { animation: floatParticles 4.5s ease-in-out infinite; animation-delay: 1s; }
         .anim-particle-3 { animation: floatParticles 3.5s ease-in-out infinite; animation-delay: 0.5s; }
+
+        /* Estilização da Barra de Scroll dos Projetos */
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: rgba(15, 15, 35, 0.5);
+            border-radius: 8px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #312e81;
+            border-radius: 8px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb:hover {
+            background: #4338ca;
+        }
     </style>
 </head>
 <body class="text-slate-100 min-h-screen relative overflow-x-hidden selection:bg-indigo-500/30">
@@ -30,7 +46,7 @@
     <div id="main-view" class="w-full">
         <header class="w-full max-w-7xl mx-auto px-6 py-6 flex justify-between items-center bg-transparent z-50 relative">
             <div class="text-sm font-bold tracking-[0.2em] text-indigo-400 uppercase cursor-pointer" onclick="goToHome()">
-                BLOG DO FB
+                BLOG FB
             </div>
             <nav class="flex gap-8 text-sm font-medium text-slate-400">
                 <a href="#projetos" class="hover:text-white transition-colors duration-300">Projetos</a>
@@ -78,39 +94,82 @@
             </a>
         </section>
 
+        <!-- SEÇÃO: PROJETOS RECENTES COM SCROLL VERTICAL -->
         <section id="projetos" class="max-w-7xl mx-auto px-6 py-24 z-10 relative">
-            <div class="mb-12">
-                <h2 class="text-2xl md:text-3xl font-bold text-white mb-2">Projetos recentes</h2>
-                <p class="text-slate-400 font-light">Aplicações web dinâmicas integradas a esta subpágina.</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div onclick="openView('#dashboard-view')" class="bg-[#0f0f23]/60 border border-slate-800/60 rounded-2xl p-6 backdrop-blur-md hover:border-indigo-500/40 transition-all duration-500 group flex flex-col justify-between cursor-pointer transform hover:-translate-y-1">
-                    <div>
-                        <div class="w-full h-48 bg-[#0a0a16] rounded-xl flex items-center justify-center text-slate-600 border border-slate-900 mb-6 font-mono text-sm group-hover:text-slate-400 transition-colors">[ preview_do_projeto_1 ]</div>
-                        <span class="text-xs font-semibold tracking-wider text-pink-500 uppercase block mb-1">WEB APP / API</span>
-                        <h3 class="text-xl font-bold text-white mb-3 group-hover:text-cyan-300 transition-colors flex justify-between items-center">
-                            Dashboard Financeiro Dinâmico
-                            <span class="text-xs text-indigo-400 font-normal group-hover:underline">Ver Detalhes →</span>
-                        </h3>
-                        <p class="text-slate-400 font-light text-sm leading-relaxed mb-6">Interface reativa com manipulação de gráficos em tempo real, consumo de dados assíncronos e arquitetura modular.</p>
-                    </div>
-                    <div class="flex gap-2">
-                        <span class="text-xs font-medium px-3 py-1 bg-slate-900 border border-slate-800 text-slate-300 rounded-md">Vue.js</span>
-                        <span class="text-xs font-medium px-3 py-1 bg-slate-900 border border-slate-800 text-slate-300 rounded-md">Chart.js</span>
-                    </div>
+            <div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl md:text-3xl font-bold text-white mb-2">Projetos recentes</h2>
+                    <p class="text-slate-400 font-light">Aplicações web dinâmicas integradas a esta subpágina.</p>
                 </div>
+                <span class="text-xs text-indigo-400/80 font-mono flex items-center gap-1.5 self-start md:self-end">
+                    <svg class="w-3.5 h-3.5 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                    Role para explorar os 4 projetos
+                </span>
+            </div>
 
-                <div class="bg-[#0f0f23]/60 border border-slate-800/60 rounded-2xl p-6 backdrop-blur-md hover:border-indigo-500/40 transition-all duration-500 group flex flex-col justify-between opacity-80 hover:opacity-100">
-                    <div>
-                        <div class="w-full h-48 bg-[#0a0a16] rounded-xl flex items-center justify-center text-slate-600 border border-slate-900 mb-6 font-mono text-sm group-hover:text-slate-400 transition-colors">[ preview_do_projeto_2 ]</div>
-                        <span class="text-xs font-semibold tracking-wider text-purple-400 uppercase block mb-1">E-COMMERCE / UI</span>
-                        <h3 class="text-xl font-bold text-white mb-3 group-hover:text-cyan-300 transition-colors">Experiência Imersiva de Produto</h3>
-                        <p class="text-slate-400 font-light text-sm leading-relaxed mb-6">Otimização de renderização asset-heavy com foco em Core Web Vitals e transições de estado ultra suaves.</p>
+            <!-- Container com rolagem vertical limitada -->
+            <div class="max-h-[620px] overflow-y-auto pr-2 custom-scroll scroll-smooth snap-y snap-mandatory rounded-2xl">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pb-4">
+
+                    <!-- PROJETO 1 -->
+                    <div onclick="openView('#dashboard-view')" class="snap-start bg-[#0f0f23]/60 border border-slate-800/60 rounded-2xl p-6 backdrop-blur-md hover:border-indigo-500/40 transition-all duration-500 group flex flex-col justify-between cursor-pointer transform hover:-translate-y-1">
+                        <div>
+                            <div class="w-full h-48 bg-[#0a0a16] rounded-xl flex items-center justify-center text-slate-600 border border-slate-900 mb-6 font-mono text-sm group-hover:text-slate-400 transition-colors">[ preview_do_projeto_1 ]</div>
+                            <span class="text-xs font-semibold tracking-wider text-pink-500 uppercase block mb-1">WEB APP / API</span>
+                            <h3 class="text-xl font-bold text-white mb-3 group-hover:text-cyan-300 transition-colors flex justify-between items-center">
+                                Dashboard Financeiro Dinâmico
+                                <span class="text-xs text-indigo-400 font-normal group-hover:underline">Ver Detalhes →</span>
+                            </h3>
+                            <p class="text-slate-400 font-light text-sm leading-relaxed mb-6">Interface reativa com manipulação de gráficos em tempo real, consumo de dados assíncronos e arquitetura modular.</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <span class="text-xs font-medium px-3 py-1 bg-slate-900 border border-slate-800 text-slate-300 rounded-md">Vue.js</span>
+                            <span class="text-xs font-medium px-3 py-1 bg-slate-900 border border-slate-800 text-slate-300 rounded-md">Chart.js</span>
+                        </div>
                     </div>
-                    <div class="flex gap-2">
-                        <span class="text-xs font-medium px-3 py-1 bg-slate-900 border border-slate-800 text-slate-300 rounded-md">Next.js</span>
-                        <span class="text-xs font-medium px-3 py-1 bg-slate-900 border border-slate-800 text-slate-300 rounded-md">Tailwind</span>
+
+                    <!-- PROJETO 2 -->
+                    <div class="snap-start bg-[#0f0f23]/60 border border-slate-800/60 rounded-2xl p-6 backdrop-blur-md hover:border-indigo-500/40 transition-all duration-500 group flex flex-col justify-between opacity-80 hover:opacity-100">
+                        <div>
+                            <div class="w-full h-48 bg-[#0a0a16] rounded-xl flex items-center justify-center text-slate-600 border border-slate-900 mb-6 font-mono text-sm group-hover:text-slate-400 transition-colors">[ preview_do_projeto_2 ]</div>
+                            <span class="text-xs font-semibold tracking-wider text-purple-400 uppercase block mb-1">E-COMMERCE / UI</span>
+                            <h3 class="text-xl font-bold text-white mb-3 group-hover:text-cyan-300 transition-colors">Experiência Imersiva de Produto</h3>
+                            <p class="text-slate-400 font-light text-sm leading-relaxed mb-6">Otimização de renderização asset-heavy com foco em Core Web Vitals e transições de estado ultra suaves.</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <span class="text-xs font-medium px-3 py-1 bg-slate-900 border border-slate-800 text-slate-300 rounded-md">Next.js</span>
+                            <span class="text-xs font-medium px-3 py-1 bg-slate-900 border border-slate-800 text-slate-300 rounded-md">Tailwind</span>
+                        </div>
                     </div>
+
+                    <!-- PROJETO 3 -->
+                    <div class="snap-start bg-[#0f0f23]/60 border border-slate-800/60 rounded-2xl p-6 backdrop-blur-md hover:border-indigo-500/40 transition-all duration-500 group flex flex-col justify-between opacity-80 hover:opacity-100">
+                        <div>
+                            <div class="w-full h-48 bg-[#0a0a16] rounded-xl flex items-center justify-center text-slate-600 border border-slate-900 mb-6 font-mono text-sm group-hover:text-slate-400 transition-colors">[ preview_do_projeto_3 ]</div>
+                            <span class="text-xs font-semibold tracking-wider text-cyan-400 uppercase block mb-1">FERRAMENTA / CLI</span>
+                            <h3 class="text-xl font-bold text-white mb-3 group-hover:text-cyan-300 transition-colors">Monitor de APIs & Latência</h3>
+                            <p class="text-slate-400 font-light text-sm leading-relaxed mb-6">Aplicação para acompanhamento contínuo de status de microsserviços com alertas em tempo real e relatórios de disponibilidade.</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <span class="text-xs font-medium px-3 py-1 bg-slate-900 border border-slate-800 text-slate-300 rounded-md">Python</span>
+                            <span class="text-xs font-medium px-3 py-1 bg-slate-900 border border-slate-800 text-slate-300 rounded-md">FastAPI</span>
+                        </div>
+                    </div>
+
+                    <!-- PROJETO 4 -->
+                    <div class="snap-start bg-[#0f0f23]/60 border border-slate-800/60 rounded-2xl p-6 backdrop-blur-md hover:border-indigo-500/40 transition-all duration-500 group flex flex-col justify-between opacity-80 hover:opacity-100">
+                        <div>
+                            <div class="w-full h-48 bg-[#0a0a16] rounded-xl flex items-center justify-center text-slate-600 border border-slate-900 mb-6 font-mono text-sm group-hover:text-slate-400 transition-colors">[ preview_do_projeto_4 ]</div>
+                            <span class="text-xs font-semibold tracking-wider text-emerald-400 uppercase block mb-1">MOBILE / HYBRID</span>
+                            <h3 class="text-xl font-bold text-white mb-3 group-hover:text-cyan-300 transition-colors">Gerenciador de Tarefas & Hábitos</h3>
+                            <p class="text-slate-400 font-light text-sm leading-relaxed mb-6">PWA focado em produtividade diária, sincronização local via IndexedDB e suporte completo a funcionamento offline.</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <span class="text-xs font-medium px-3 py-1 bg-slate-900 border border-slate-800 text-slate-300 rounded-md">React Native</span>
+                            <span class="text-xs font-medium px-3 py-1 bg-slate-900 border border-slate-800 text-slate-300 rounded-md">TypeScript</span>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </section>
@@ -126,7 +185,6 @@
             </div>
             
             <div class="flex flex-col gap-4">
-                <!-- ARTIGO TERMUX INSERIDO NO TOPO DA HOME -->
                 <div onclick="carregarEAbriArtigo('Termux no Android: Seu Primeiro Passo para o Linux no Celular', '18 de Julho, 2026', 'Tutorial', 'artigos/artigo-termux.html')" class="flex flex-col sm:flex-row sm:items-center justify-between p-6 bg-[#0f0f23]/40 border border-slate-900 hover:border-slate-800 rounded-xl hover:bg-[#12122b]/50 transition-all duration-300 group cursor-pointer">
                     <div>
                         <span class="text-xs font-medium text-slate-500 block mb-1">18 de Julho, 2026</span>
@@ -188,7 +246,6 @@
             </div>
 
             <div class="flex flex-col gap-4">
-                <!-- ARTIGO TERMUX INSERIDO NO TOPO DO CATÁLOGO COMPLETO -->
                 <div onclick="carregarEAbriArtigo('Termux no Android: Seu primeiro passo para o Linux no celular', '18 de Julho, 2026', 'Tutorial', 'artigos/artigo-termux.html')" class="flex flex-col sm:flex-row sm:items-center justify-between p-6 bg-[#0f0f23]/30 border border-slate-900/60 hover:border-slate-800 rounded-xl hover:bg-[#12122b]/40 transition-all duration-300 group cursor-pointer">
                     <div><span class="text-xs font-medium text-slate-500 block mb-1">18 de Julho, 2026</span><h4 class="text-base font-medium text-slate-200 group-hover:text-cyan-400 transition-colors">Termux no Android: Seu Primeiro Passo para o Linux no Celular</h4></div>
                     <div class="mt-2 sm:mt-0"><span class="text-xs font-medium px-3 py-1 bg-cyan-950/40 border border-cyan-900/50 text-cyan-300 rounded-full">Tutorial</span></div>
