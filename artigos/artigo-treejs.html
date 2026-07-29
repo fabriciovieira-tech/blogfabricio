@@ -1,0 +1,172 @@
+<article class="space-y-6 text-slate-300 font-light leading-relaxed">
+    
+    <!-- Subtítulo / Introdução -->
+    <p class="text-base md:text-lg text-slate-200 font-normal leading-relaxed border-l-2 border-indigo-500 pl-4 py-1">
+        Da teoria à prática: conceitos essenciais e técnicas para otimizar animações complexas em Three.js.
+    </p>
+
+    <p>
+        O desenvolvimento web evoluiu muito nos últimos anos. Hoje é possível criar experiências tridimensionais diretamente no navegador, sem instalar nenhum software adicional. Jogos, simuladores, configuradores de produtos, visualizações arquitetônicas e aplicações educacionais são alguns exemplos que utilizam gráficos 3D na web.
+    </p>
+
+    <p>
+        Entre as tecnologias responsáveis por essa evolução está o <strong>JavaScript</strong>, linguagem que permite adicionar interatividade às páginas, e o <strong>Three.js</strong>, uma biblioteca que simplifica o uso do WebGL para renderização de gráficos 3D.
+    </p>
+
+    <p>
+        Entretanto, conforme uma cena se torna mais complexa, surge um dos maiores desafios desse tipo de aplicação: manter uma boa taxa de quadros por segundo (<em>Frames Per Second – FPS</em>). Uma queda no FPS resulta em animações travadas, sensação de lentidão e pior experiência para o usuário.
+    </p>
+
+    <!-- Fundamentos das Tecnologias -->
+    <h3 class="text-xl md:text-2xl font-bold text-white pt-4 pb-2 border-b border-slate-800">
+        Fundamentos da Tecnologia
+    </h3>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <div class="bg-[#0f0f23]/60 border border-slate-800/80 rounded-xl p-5">
+            <h4 class="text-lg font-bold text-cyan-400 mb-2">O que é JavaScript?</h4>
+            <p class="text-sm leading-relaxed text-slate-300">
+                Linguagem para criar páginas web interativas. Adiciona comportamento respondendo a ações, fazendo requisições, manipulando elementos e gerando animações 2D/3D.
+            </p>
+        </div>
+
+        <div class="bg-[#0f0f23]/60 border border-slate-800/80 rounded-xl p-5">
+            <h4 class="text-lg font-bold text-purple-400 mb-2">O que é Three.js?</h4>
+            <p class="text-sm leading-relaxed text-slate-300">
+                Biblioteca que simplifica o WebGL. Permite trabalhar com Cenas (<em>Scene</em>), Câmeras, Luzes, Geometrias, Materiais e Renderizadores de forma intuitiva.
+            </p>
+        </div>
+    </div>
+
+    <!-- O que significa FPS -->
+    <h3 class="text-xl md:text-2xl font-bold text-white pt-4 pb-2 border-b border-slate-800">
+        O que significa FPS?
+    </h3>
+
+    <p>
+        FPS (<em>Frames Per Second</em>) representa a quantidade de imagens desenhadas por segundo. A percepção de fluidez varia de acordo com essa taxa:
+    </p>
+
+    <ul class="grid grid-cols-1 sm:grid-cols-3 gap-3 my-4">
+        <li class="bg-[#0a0a16] border border-slate-800/60 p-3 rounded-lg text-center">
+            <span class="block text-xl font-bold text-amber-400 mb-1">30 FPS</span>
+            <span class="text-xs text-slate-400">Experiência aceitável</span>
+        </li>
+        <li class="bg-[#0a0a16] border border-slate-800/60 p-3 rounded-lg text-center">
+            <span class="block text-xl font-bold text-emerald-400 mb-1">60 FPS</span>
+            <span class="text-xs text-slate-400">Animações suaves</span>
+        </li>
+        <li class="bg-[#0a0a16] border border-slate-800/60 p-3 rounded-lg text-center">
+            <span class="block text-xl font-bold text-cyan-400 mb-1">&gt; 60 FPS</span>
+            <span class="text-xs text-slate-400">Excelente fluidez</span>
+        </li>
+    </ul>
+
+    <!-- Exemplo Prático / Callout -->
+    <h3 class="text-xl md:text-2xl font-bold text-white pt-4 pb-2 border-b border-slate-800">
+        Gargalos de Desempenho e Exemplo Prático
+    </h3>
+
+    <p>
+        Cada quadro exige o cálculo de posições, iluminação, sombras, texturas e efeitos visuais. Em uma cena com milhares de elementos simultâneos — como um configurador 3D de veículos com mais de 1 milhão de polígonos —, a falta de otimização derruba a taxa para 15 a 20 FPS, gerando atraso e alto consumo de energia.
+    </p>
+
+    <div class="bg-[#0f0f23]/80 border border-slate-800/80 rounded-xl p-5 my-6 backdrop-blur-sm">
+        <p class="text-sm text-slate-300 italic">
+            "Após aplicar técnicas de otimização, o desempenho pode subir para aproximadamente 60 FPS em computadores intermediários e manter boa fluidez em dispositivos móveis modernos."
+        </p>
+    </div>
+
+    <!-- Técnicas de Otimização -->
+    <h3 class="text-xl md:text-2xl font-bold text-white pt-4 pb-2 border-b border-slate-800">
+        Principais Técnicas de Otimização
+    </h3>
+
+    <div class="space-y-4 my-4">
+        <div class="bg-[#0a0a16] border border-slate-800/60 p-4 rounded-xl">
+            <h4 class="text-base font-bold text-slate-100 mb-1 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+                1. Redução da quantidade de polígonos
+            </h4>
+            <p class="text-sm text-slate-400">Modelos simplificados exigem menos esforço da GPU sem perda perceptível de qualidade visual.</p>
+        </div>
+
+        <div class="bg-[#0a0a16] border border-slate-800/60 p-4 rounded-xl">
+            <h4 class="text-base font-bold text-slate-100 mb-1 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+                2. Frustum Culling
+            </h4>
+            <p class="text-sm text-slate-400">Descarta da renderização objetos que estão totalmente fora do campo de visão da câmera.</p>
+        </div>
+
+        <div class="bg-[#0a0a16] border border-slate-800/60 p-4 rounded-xl">
+            <h4 class="text-base font-bold text-slate-100 mb-1 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-purple-400"></span>
+                3. Level of Detail (LOD)
+            </h4>
+            <p class="text-sm text-slate-400">Alterna versões do mesmo modelo conforme a distância. Elementos distantes utilizam geometrias mais leves.</p>
+        </div>
+
+        <div class="bg-[#0a0a16] border border-slate-800/60 p-4 rounded-xl">
+            <h4 class="text-base font-bold text-slate-100 mb-1 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-pink-400"></span>
+                4. Instanced Mesh
+            </h4>
+            <p class="text-sm text-slate-400">Reaproveita uma única geometria na GPU para múltiplos objetos idênticos, reduzindo chamadas de renderização (<em>Draw Calls</em>).</p>
+        </div>
+
+        <div class="bg-[#0a0a16] border border-slate-800/60 p-4 rounded-xl">
+            <h4 class="text-base font-bold text-slate-100 mb-1 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                5. Compressão de texturas &amp; Lazy Loading
+            </h4>
+            <p class="text-sm text-slate-400">Uso de formatos comprimidos como KTX2/Basis e carregamento sob demanda para diminuir tempo de abertura e uso de memória.</p>
+        </div>
+
+        <div class="bg-[#0a0a16] border border-slate-800/60 p-4 rounded-xl">
+            <h4 class="text-base font-bold text-slate-100 mb-1 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                6. Gestão de Sombras &amp; Animações
+            </h4>
+            <p class="text-sm text-slate-400">Limita projetores de sombra, reduz resoluções de shadow maps e evita atualizar na CPU objetos que não mudaram de posição.</p>
+        </div>
+    </div>
+
+    <!-- Ferramentas -->
+    <h3 class="text-xl md:text-2xl font-bold text-white pt-4 pb-2 border-b border-slate-800">
+        Ferramentas para Medir Desempenho
+    </h3>
+
+    <p>
+        Durante a fase de otimização, o uso de utilitários adequados é essencial para validar os ganhos obtidos:
+    </p>
+
+    <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 my-4">
+        <li class="flex items-center gap-2 bg-[#0a0a16] border border-slate-800/60 p-3 rounded-lg text-sm text-slate-200">
+            <strong class="text-cyan-400">Stats.js:</strong> Monitoramento de FPS em tempo real.
+        </li>
+        <li class="flex items-center gap-2 bg-[#0a0a16] border border-slate-800/60 p-3 rounded-lg text-sm text-slate-200">
+            <strong class="text-indigo-400">Chrome DevTools:</strong> Análise de gargalos em CPU e GPU.
+        </li>
+        <li class="flex items-center gap-2 bg-[#0a0a16] border border-slate-800/60 p-3 rounded-lg text-sm text-slate-200">
+            <strong class="text-purple-400">Performance Panel:</strong> Diagnóstico de tempo de quadros.
+        </li>
+        <li class="flex items-center gap-2 bg-[#0a0a16] border border-slate-800/60 p-3 rounded-lg text-sm text-slate-200">
+            <strong class="text-pink-400">Spector.js:</strong> Inspeção detalhada das chamadas WebGL.
+        </li>
+    </ul>
+
+    <!-- Conclusão -->
+    <h3 class="text-xl md:text-2xl font-bold text-white pt-4 pb-2 border-b border-slate-800">
+        Conclusão
+    </h3>
+
+    <p>
+        JavaScript e Three.js permitem criar aplicações 3D extremamente sofisticadas diretamente no navegador. Entretanto, a qualidade visual deve ser equilibrada com o desempenho.
+    </p>
+
+    <p>
+        Manter uma alta taxa de FPS depende da adoção de boas práticas como redução da complexidade geométrica, uso de LOD, InstancedMesh, compressão de texturas, carregamento sob demanda e gerenciamento eficiente das sombras. Ao combinar essas estratégias com ferramentas de monitoramento, é possível desenvolver aplicações fluidas, responsivas e visualmente impressionantes.
+    </p>
+
+</article>
