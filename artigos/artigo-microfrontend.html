@@ -6,12 +6,24 @@
     </p>
 
     <p>
-        À medida que as aplicações web crescem em tamanho e complexidade, torna-se cada vez mais importante organizar o código de forma que facilite sua manutenção, escalabilidade e evolução[span_1](start_span)[span_1](end_span). Em sistemas desenvolvidos por equipes multidisciplinares, uma arquitetura bem definida reduz conflitos entre desenvolvedores, melhora a reutilização de componentes e acelera a entrega de novas funcionalidades[span_2](start_span)[span_2](end_span).
+        À medida que as aplicações web crescem em tamanho e complexidade, torna-se cada vez mais importante organizar o código de forma que facilite sua manutenção, escalabilidade e evolução. Em sistemas desenvolvidos por equipes multidisciplinares, uma arquitetura bem definida reduz conflitos entre desenvolvedores, melhora a reutilização de componentes e acelera a entrega de novas funcionalidades.
     </p>
 
     <p>
-        Nesse contexto, duas práticas têm ganhado destaque no desenvolvimento frontend moderno: a estruturação adequada de subpáginas e a arquitetura de Micro-Frontends[span_3](start_span)[span_3](end_span). Enquanto a primeira organiza a navegação e a separação lógica das funcionalidades, a segunda permite dividir uma aplicação em módulos independentes, possibilitando que diferentes equipes trabalhem de forma paralela e com maior autonomia[span_4](start_span)[span_4](end_span).
+        Nesse contexto, duas práticas têm ganhado destaque no desenvolvimento frontend moderno: a estruturação adequada de subpáginas e a arquitetura de Micro-Frontends. Enquanto a primeira organiza a navegação e a separação lógica das funcionalidades, a segunda permite dividir uma aplicação em módulos independentes, possibilitando que diferentes equipes trabalhem de forma paralela e com maior autonomia.
     </p>
+
+    <!-- IMAGEM 1: Conceito de Arquitetura & Estrutura -->
+    <figure class="my-8">
+        <img 
+            src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80" 
+            alt="Código e estrutura de arquitetura de software frontend" 
+            class="w-full h-64 md:h-80 object-cover rounded-xl border border-slate-800/80 shadow-lg"
+        />
+        <figcaption class="text-xs text-slate-500 text-center mt-2 italic">
+            Figura 1: A organização limpa do código e a separação por módulos são a base para sistemas frontend sustentáveis.
+        </figcaption>
+    </figure>
 
     <!-- O que são e por que estruturar Subpáginas -->
     <h3 class="text-xl md:text-2xl font-bold text-white pt-4 pb-2 border-b border-slate-800">
@@ -19,27 +31,27 @@
     </h3>
 
     <p>
-        Subpáginas são páginas internas de uma aplicação que representam funcionalidades ou áreas específicas do sistema, acessadas por meio de rotas claras[span_5](start_span)[span_5](end_span). Elas dividem responsabilidades, evitando que a lógica fique concentrada em um único local[span_6](start_span)[span_6](end_span).
+        Subpáginas são páginas internas de uma aplicação que representam funcionalidades ou áreas específicas do sistema, acessadas por meio de rotas claras. Elas dividem responsabilidades, evitando que a lógica fique concentrada em um único local.
     </p>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
         <div class="bg-[#0f0f23]/60 border border-slate-800/80 rounded-xl p-5">
             <h4 class="text-lg font-bold text-cyan-400 mb-2">Exemplos Práticos</h4>
             <ul class="text-sm space-y-1 text-slate-300">
-                <li>• Página inicial / Catálogo[span_7](start_span)[span_7](end_span)</li>
-                <li>• Carrinho de compras[span_8](start_span)[span_8](end_span)</li>
-                <li>• Área do cliente &amp; Pedidos[span_9](start_span)[span_9](end_span)</li>
-                <li>• Configurações da conta[span_10](start_span)[span_10](end_span)</li>
+                <li>• Página inicial / Catálogo</li>
+                <li>• Carrinho de compras</li>
+                <li>• Área do cliente &amp; Pedidos</li>
+                <li>• Configurações da conta</li>
             </ul>
         </div>
 
         <div class="bg-[#0f0f23]/60 border border-slate-800/80 rounded-xl p-5">
             <h4 class="text-lg font-bold text-purple-400 mb-2">Principais Benefícios</h4>
             <ul class="text-sm space-y-1 text-slate-300">
-                <li>• Facilidade de manutenção e testes[span_11](start_span)[span_11](end_span)</li>
-                <li>• Reutilização eficiente de componentes[span_12](start_span)[span_12](end_span)</li>
-                <li>• Escalabilidade do projeto[span_13](start_span)[span_13](end_span)</li>
-                <li>• Melhoria na UX de navegação[span_14](start_span)[span_14](end_span)</li>
+                <li>• Facilidade de manutenção e testes</li>
+                <li>• Reutilização eficiente de componentes</li>
+                <li>• Escalabilidade do projeto</li>
+                <li>• Melhoria na UX de navegação</li>
             </ul>
         </div>
     </div>
@@ -55,8 +67,8 @@
                 <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
                 Organização por Domínio / Funcionalidade
             </h4>
-            <p class="text-sm text-slate-400 mb-2">Em vez de agrupar por tipo de arquivo, agrupa-se os recursos pelas áreas de negócio[span_15](start_span)[span_15](end_span).</p>
-            <pre class="bg-[#060613] p-3 rounded text-xs font-mono text-indigo-300 overflow-x-auto">
+            <p class="text-sm text-slate-400 mb-2">Em vez de agrupar por tipo de arquivo, agrupa-se os recursos pelas áreas de negócio.</p>
+            <pre class="bg-[#060613] p-3 rounded text-xs font-mono text-indigo-300 overflow-x-auto border border-slate-900">
 /clientes (ClienteList.jsx, ClienteForm.jsx, ClienteService.js)
 /produtos (ProdutoList.jsx, ProdutoForm.jsx, ProdutoService.js)</pre>
         </div>
@@ -66,7 +78,7 @@
                 <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
                 Rotas Padronizadas &amp; Componentização
             </h4>
-            <p class="text-sm text-slate-400">Utilize caminhos limpos (ex: <code>/clientes/123</code>)[span_16](start_span)[span_16](end_span) e isole elementos globais (menus, botões e tabelas) em componentes reutilizáveis para evitar duplicação[span_17](start_span)[span_17](end_span).</p>
+            <p class="text-sm text-slate-400">Utilize caminhos limpos (ex: <code class="text-cyan-300">/clientes/123</code>) e isole elementos globais (menus, botões e tabelas) em componentes reutilizáveis para evitar duplicação.</p>
         </div>
 
         <div class="bg-[#0a0a16] border border-slate-800/60 p-4 rounded-xl">
@@ -74,9 +86,21 @@
                 <span class="w-2 h-2 rounded-full bg-purple-400"></span>
                 Separação entre Interface e Lógica
             </h4>
-            <p class="text-sm text-slate-400">Mantenha a camada visual isolada dos serviços HTTP e regras de negócio[span_18](start_span)[span_18](end_span). Isso garante um código mais limpo e testável[span_19](start_span)[span_19](end_span).</p>
+            <p class="text-sm text-slate-400">Mantenha a camada visual isolada dos serviços HTTP e regras de negócio. Isso garante um código mais limpo e testável.</p>
         </div>
     </div>
+
+    <!-- IMAGEM 2: Representação de Módulos & Micro-Frontends -->
+    <figure class="my-8">
+        <img 
+            src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80" 
+            alt="Painéis e dashboards modulares representando Micro-Frontends" 
+            class="w-full h-64 md:h-80 object-cover rounded-xl border border-slate-800/80 shadow-lg"
+        />
+        <figcaption class="text-xs text-slate-500 text-center mt-2 italic">
+            Figura 2: Na arquitetura de Micro-Frontends, cada funcionalidade (como pagamentos, gráficos ou suporte) atua como uma aplicação independente.
+        </figcaption>
+    </figure>
 
     <!-- Micro-Frontends -->
     <h3 class="text-xl md:text-2xl font-bold text-white pt-4 pb-2 border-b border-slate-800">
@@ -84,12 +108,12 @@
     </h3>
 
     <p>
-        Micro-Frontends aplicam os princípios de microsserviços ao frontend[span_20](start_span)[span_20](end_span). A aplicação deixa de ser um monolito e passa a ser composta por pequenos módulos independentes[span_21](start_span)[span_21](end_span), cada um com sua equipe, pipeline de deploy e ciclo de vida[span_22](start_span)[span_22](end_span).
+        Micro-Frontends aplicam os princípios de microsserviços ao frontend. A aplicação deixa de ser um monolito e passa a ser composta por pequenos módulos independentes, cada um com sua equipe, pipeline de deploy e ciclo de vida.
     </p>
 
     <div class="bg-[#0f0f23]/80 border border-slate-800/80 rounded-xl p-5 my-6 backdrop-blur-sm">
         <p class="text-sm text-slate-300 italic">
-            "Em uma plataforma financeira com Micro-Frontends, a equipe de pagamentos pode lançar novos métodos e a equipe de investimentos atualizar seus gráficos sem que uma dependa ou trave o deploy da outra.[span_23](start_span)"[span_23](end_span)
+            "Em uma plataforma financeira com Micro-Frontends, a equipe de pagamentos pode lançar novos métodos e a equipe de investimentos atualizar seus gráficos sem que uma dependa ou trave o deploy da outra."
         </p>
     </div>
 
@@ -101,20 +125,20 @@
         <div class="bg-[#0a0a16] border border-slate-800/60 p-4 rounded-xl">
             <h4 class="text-base font-bold text-emerald-400 mb-2">Vantagens</h4>
             <ul class="text-xs space-y-1.5 text-slate-300">
-                <li>✔ Maior escalabilidade e autonomia[span_24](start_span)[span_24](end_span)</li>
-                <li>✔ Menor risco em implantações (deploys)[span_25](start_span)[span_25](end_span)</li>
-                <li>✔ Isolamento de falhas e manutenção simplificada[span_26](start_span)[span_26](end_span)</li>
-                <li>✔ Evolução tecnológica gradual[span_27](start_span)[span_27](end_span)</li>
+                <li>✔ Maior escalabilidade e autonomia</li>
+                <li>✔ Menor risco em implantações (deploys)</li>
+                <li>✔ Isolamento de falhas e manutenção simplificada</li>
+                <li>✔ Evolução tecnológica gradual</li>
             </ul>
         </div>
 
         <div class="bg-[#0a0a16] border border-slate-800/60 p-4 rounded-xl">
             <h4 class="text-base font-bold text-amber-400 mb-2">Pontos de Atenção</h4>
             <ul class="text-xs space-y-1.5 text-slate-300">
-                <li>⚠ Padronização da identidade visual[span_28](start_span)[span_28](end_span)</li>
-                <li>⚠ Gerenciamento de dependências e libs[span_29](start_span)[span_29](end_span)</li>
-                <li>⚠ Comunicação e autenticação entre módulos[span_30](start_span)[span_30](end_span)</li>
-                <li>⚠ Complexidade operacional inicial[span_31](start_span)[span_31](end_span)</li>
+                <li>⚠ Padronização da identidade visual</li>
+                <li>⚠ Gerenciamento de dependências e libs</li>
+                <li>⚠ Comunicação e autenticação entre módulos</li>
+                <li>⚠ Complexidade operacional inicial</li>
             </ul>
         </div>
     </div>
@@ -125,11 +149,11 @@
     </h3>
 
     <p>
-        A decisão de adotar Micro-Frontends deve ser pautada pelo tamanho da aplicação e pela quantidade de equipes envolvidas[span_32](start_span)[span_32](end_span). Para projetos menores ou com um único time, um monolito bem organizado com boa estrutura de subpáginas é mais eficiente e simples de manter[span_33](start_span)[span_33](end_span).
+        A decisão de adotar Micro-Frontends deve ser pautada pelo tamanho da aplicação e pela quantidade de equipes envolvidas. Para projetos menores ou com um único time, um monolito bem organizado com boa estrutura de subpáginas é mais eficiente e simples de manter.
     </p>
 
     <p>
-        Em ecossistemas corporativos complexos, essa abordagem descentralizada minimiza o acoplamento[span_34](start_span)[span_34](end_span), acelera o ciclo de desenvolvimento e garante a longevidade da arquitetura de software[span_35](start_span)[span_35](end_span).
+        Em ecossistemas corporativos complexos, essa abordagem descentralizada minimiza o acoplamento, acelera o ciclo de desenvolvimento e garante a longevidade da arquitetura de software.
     </p>
 
 </article>
