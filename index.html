@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Serra Tecnologia | Blog do Fabricio Vieira</title>
+    <title>Serra Tecnologia | Blog do Fabricio Vieira</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -98,13 +98,22 @@
 
             <div class="flex gap-6 overflow-x-auto pb-6 custom-scroll-x scroll-smooth snap-x snap-mandatory">
                 
-                <!-- PROJETO 1: DASHBOARD FINANCEIRO DINÂMICO -->
+                <!-- PROJETO 1: DASHBOARD FINANCEIRO DINÂMICO (COM IMAGEM CONTEXTUALIZADA) -->
                 <div onclick="abrirDashboardApp()" class="snap-start shrink-0 w-[85vw] sm:w-[450px] bg-[#0f0f23]/60 border border-slate-800/60 rounded-2xl p-6 backdrop-blur-md hover:border-indigo-500/40 transition-all duration-500 group flex flex-col justify-between cursor-pointer transform hover:-translate-y-1">
                     <div>
-                        <div class="w-full h-48 bg-[#0a0a16] rounded-xl flex flex-col items-center justify-center text-slate-500 border border-slate-900 mb-6 font-mono text-xs group-hover:text-cyan-400 transition-colors p-4 text-center">
-                            <svg class="w-10 h-10 mb-2 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-                            <span>[ painel_preditivo_cdi.vue ]</span>
+                        <!-- Imagem Contextualizada da Aplicação -->
+                        <div class="w-full h-48 rounded-xl overflow-hidden relative border border-slate-800/80 mb-6 bg-[#0a0a16]">
+                            <img 
+                                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=900&auto=format&fit=crop" 
+                                alt="Dashboard analítico de investimentos e finanças" 
+                                class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100"
+                            />
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#0f0f23] via-transparent to-transparent"></div>
+                            <div class="absolute top-3 left-3 bg-[#060613]/80 backdrop-blur-md px-2.5 py-1 rounded-md border border-cyan-500/30 text-[10px] font-mono text-cyan-300">
+                                <span>Realtime &bull; CDI BCB</span>
+                            </div>
                         </div>
+
                         <span class="text-xs font-semibold tracking-wider text-pink-500 uppercase block mb-1">WEB APP / FINAN&Ccedil;AS</span>
                         <h3 class="text-xl font-bold text-white mb-3 group-hover:text-cyan-300 transition-colors flex justify-between items-center">
                             Dashboard Financeiro Din&acirc;mico
@@ -121,6 +130,7 @@
                     </div>
                 </div>
 
+                <!-- PROJETO 2 -->
                 <div class="snap-start shrink-0 w-[85vw] sm:w-[450px] bg-[#0f0f23]/60 border border-slate-800/60 rounded-2xl p-6 backdrop-blur-md hover:border-indigo-500/40 transition-all duration-500 group flex flex-col justify-between opacity-80 hover:opacity-100">
                     <div>
                         <div class="w-full h-48 bg-[#0a0a16] rounded-xl flex items-center justify-center text-slate-600 border border-slate-900 mb-6 font-mono text-sm group-hover:text-slate-400 transition-colors">[ preview_do_projeto_2 ]</div>
@@ -134,6 +144,7 @@
                     </div>
                 </div>
 
+                <!-- PROJETO 3 -->
                 <div class="snap-start shrink-0 w-[85vw] sm:w-[450px] bg-[#0f0f23]/60 border border-slate-800/60 rounded-2xl p-6 backdrop-blur-md hover:border-indigo-500/40 transition-all duration-500 group flex flex-col justify-between opacity-80 hover:opacity-100">
                     <div>
                         <div class="w-full h-48 bg-[#0a0a16] rounded-xl flex items-center justify-center text-slate-600 border border-slate-900 mb-6 font-mono text-sm group-hover:text-slate-400 transition-colors">[ preview_do_projeto_3 ]</div>
@@ -147,6 +158,7 @@
                     </div>
                 </div>
 
+                <!-- PROJETO 4 -->
                 <div class="snap-start shrink-0 w-[85vw] sm:w-[450px] bg-[#0f0f23]/60 border border-slate-800/60 rounded-2xl p-6 backdrop-blur-md hover:border-indigo-500/40 transition-all duration-500 group flex flex-col justify-between opacity-80 hover:opacity-100">
                     <div>
                         <div class="w-full h-48 bg-[#0a0a16] rounded-xl flex items-center justify-center text-slate-600 border border-slate-900 mb-6 font-mono text-sm group-hover:text-slate-400 transition-colors">[ preview_do_projeto_4 ]</div>
@@ -173,7 +185,6 @@
             </div>
             
             <div class="flex flex-col gap-4">
-                <!-- 18 de Agosto, 2026 -->
                 <div onclick="carregarEAbriArtigo('Faz sentido falarmos sobre inteligência emocional nesse cenário de IA?', '18 de Agosto, 2026', 'Comportamento', 'artigos/artigo-ie.html')" class="flex flex-col sm:flex-row sm:items-center justify-between p-6 bg-[#0f0f23]/40 border border-slate-900 hover:border-slate-800 rounded-xl hover:bg-[#12122b]/50 transition-all duration-300 group cursor-pointer">
                     <div>
                         <span class="text-xs font-medium text-slate-500 block mb-1">18 de Agosto, 2026</span>
@@ -182,7 +193,6 @@
                     <div class="mt-4 sm:mt-0"><span class="text-xs font-medium px-3 py-1 bg-rose-950/40 border border-rose-900/50 text-rose-300 rounded-full">Comportamento</span></div>
                 </div>
 
-                <!-- 29 de Julho, 2026 -->
                 <div onclick="carregarEAbriArtigo('Boas práticas para estruturação de subpáginas e micro-frontends', '29 de Julho, 2026', 'Arquitetura', 'artigos/artigo-microfrontend.html')" class="flex flex-col sm:flex-row sm:items-center justify-between p-6 bg-[#0f0f23]/40 border border-slate-900 hover:border-slate-800 rounded-xl hover:bg-[#12122b]/50 transition-all duration-300 group cursor-pointer">
                     <div>
                         <span class="text-xs font-medium text-slate-500 block mb-1">29 de Julho, 2026</span>
@@ -191,7 +201,6 @@
                     <div class="mt-4 sm:mt-0"><span class="text-xs font-medium px-3 py-1 bg-purple-950/40 border border-purple-900/50 text-purple-300 rounded-full">Arquitetura</span></div>
                 </div>
 
-                <!-- 29 de Julho, 2026 -->
                 <div onclick="carregarEAbriArtigo('Otimizando a taxa de quadros (FPS) em animações Three.js complexas', '29 de Julho, 2026', 'Performance', 'artigos/artigo-threejs.html')" class="flex flex-col sm:flex-row sm:items-center justify-between p-6 bg-[#0f0f23]/40 border border-slate-900 hover:border-slate-800 rounded-xl hover:bg-[#12122b]/50 transition-all duration-300 group cursor-pointer">
                     <div>
                         <span class="text-xs font-medium text-slate-500 block mb-1">29 de Julho, 2026</span>
@@ -214,7 +223,7 @@
                 <span class="transform group-hover:-translate-x-1 transition-transform">&larr;</span> Voltar para a Home
             </button>
             <div id="dashboard-frame-container" class="w-full min-h-[85vh] rounded-2xl overflow-hidden">
-                <iframe src="projetos/dashboard.html" class="w-full min-h-[90vh] border-0 rounded-2xl bg-transparent" loading="lazy"></iframe>
+                <iframe src="dashboard.html" class="w-full min-h-[90vh] border-0 rounded-2xl bg-transparent" loading="lazy"></iframe>
             </div>
         </div>
     </div>
@@ -232,31 +241,26 @@
             </div>
 
             <div class="flex flex-col gap-4">
-                <!-- 18 de Agosto, 2026 -->
                 <div onclick="carregarEAbriArtigo('Faz sentido falarmos sobre inteligência emocional nesse cenário de IA?', '18 de Agosto, 2026', 'Comportamento', 'artigos/artigo-ie.html')" class="flex flex-col sm:flex-row sm:items-center justify-between p-6 bg-[#0f0f23]/30 border border-slate-900/60 hover:border-slate-800 rounded-xl hover:bg-[#12122b]/40 transition-all duration-300 group cursor-pointer">
                     <div><span class="text-xs font-medium text-slate-500 block mb-1">18 de Agosto, 2026</span><h4 class="text-base font-medium text-slate-200 group-hover:text-cyan-400 transition-colors">Faz sentido falarmos sobre intelig&ecirc;ncia emocional nesse cen&aacute;rio de IA?</h4></div>
                     <div class="mt-2 sm:mt-0"><span class="text-xs font-medium px-3 py-1 bg-rose-950/40 border border-rose-900/50 text-rose-300 rounded-full">Comportamento</span></div>
                 </div>
 
-                <!-- 29 de Julho, 2026 -->
                 <div onclick="carregarEAbriArtigo('Boas práticas para estruturação de subpáginas e micro-frontends', '29 de Julho, 2026', 'Arquitetura', 'artigos/artigo-microfrontend.html')" class="flex flex-col sm:flex-row sm:items-center justify-between p-6 bg-[#0f0f23]/30 border border-slate-900/60 hover:border-slate-800 rounded-xl hover:bg-[#12122b]/40 transition-all duration-300 group cursor-pointer">
                     <div><span class="text-xs font-medium text-slate-500 block mb-1">29 de Julho, 2026</span><h4 class="text-base font-medium text-slate-200 group-hover:text-cyan-400 transition-colors">Boas pr&aacute;ticas para estrutura&ccedil;&atilde;o de subp&aacute;ginas e micro-frontends</h4></div>
                     <div class="mt-2 sm:mt-0"><span class="text-xs font-medium px-3 py-1 bg-purple-950/40 border border-purple-900/50 text-purple-300 rounded-full">Arquitetura</span></div>
                 </div>
 
-                <!-- 29 de Julho, 2026 -->
                 <div onclick="carregarEAbriArtigo('Otimizando a taxa de quadros (FPS) em animações Three.js complexas', '29 de Julho, 2026', 'Performance', 'artigos/artigo-threejs.html')" class="flex flex-col sm:flex-row sm:items-center justify-between p-6 bg-[#0f0f23]/30 border border-slate-900/60 hover:border-slate-800 rounded-xl hover:bg-[#12122b]/40 transition-all duration-300 group cursor-pointer">
                     <div><span class="text-xs font-medium text-slate-500 block mb-1">29 de Julho, 2026</span><h4 class="text-base font-medium text-slate-200 group-hover:text-cyan-400 transition-colors">Otimizando a taxa de quadros (FPS) em anima&ccedil;&otilde;es Three.js complexas</h4></div>
                     <div class="mt-2 sm:mt-0"><span class="text-xs font-medium px-3 py-1 bg-indigo-950/40 border border-indigo-900/50 text-indigo-300 rounded-full">Performance</span></div>
                 </div>
 
-                <!-- 18 de Julho, 2026 -->
                 <div onclick="carregarEAbriArtigo('Termux no Android: seu primeiro passo para o Linux no celular', '18 de Julho, 2026', 'Tutorial', 'artigos/artigo-termux.html')" class="flex flex-col sm:flex-row sm:items-center justify-between p-6 bg-[#0f0f23]/30 border border-slate-900/60 hover:border-slate-800 rounded-xl hover:bg-[#12122b]/40 transition-all duration-300 group cursor-pointer">
                     <div><span class="text-xs font-medium text-slate-500 block mb-1">18 de Julho, 2026</span><h4 class="text-base font-medium text-slate-200 group-hover:text-cyan-400 transition-colors">Termux no Android: seu primeiro passo para o Linux no celular</h4></div>
                     <div class="mt-2 sm:mt-0"><span class="text-xs font-medium px-3 py-1 bg-cyan-950/40 border border-cyan-900/50 text-cyan-300 rounded-full">Tutorial</span></div>
                 </div>
 
-                <!-- 26 de Junho, 2026 -->
                 <div onclick="carregarEAbriArtigo('Minha transformação com a experiência na plataforma da DIO', '26 de Junho, 2026', 'Carreira', 'artigos/artigo-dio.html')" class="flex flex-col sm:flex-row sm:items-center justify-between p-6 bg-[#0f0f23]/30 border border-slate-900/60 hover:border-slate-800 rounded-xl hover:bg-[#12122b]/40 transition-all duration-300 group cursor-pointer">
                     <div><span class="text-xs font-medium text-slate-500 block mb-1">26 de Junho, 2026</span><h4 class="text-base font-medium text-slate-200 group-hover:text-cyan-400 transition-colors">Minha transforma&ccedil;&atilde;o com a experi&ecirc;ncia na plataforma da DIO</h4></div>
                     <div class="mt-2 sm:mt-0"><span class="text-xs font-medium px-3 py-1 bg-emerald-950/40 border border-emerald-900/50 text-emerald-300 rounded-full">Carreira</span></div>
