@@ -129,17 +129,34 @@
                     </div>
                 </div>
 
-                <!-- PROJETO 2 -->
-                <div class="snap-start shrink-0 w-[85vw] sm:w-[450px] bg-[#0f0f23]/60 border border-slate-800/60 rounded-2xl p-6 backdrop-blur-md hover:border-indigo-500/40 transition-all duration-500 group flex flex-col justify-between opacity-80 hover:opacity-100">
+                <!-- PROJETO 2: VITRINE DE JOIAS & RELÓGIOS (INTEGRADO COM IMAGEM) -->
+                <div onclick="abrirVitrineRelogioApp()" class="snap-start shrink-0 w-[85vw] sm:w-[450px] bg-[#0f0f23]/60 border border-slate-800/60 rounded-2xl p-6 backdrop-blur-md hover:border-amber-500/40 transition-all duration-500 group flex flex-col justify-between cursor-pointer transform hover:-translate-y-1">
                     <div>
-                        <div class="w-full h-48 bg-[#0a0a16] rounded-xl flex items-center justify-center text-slate-600 border border-slate-900 mb-6 font-mono text-sm group-hover:text-slate-400 transition-colors">[ preview_do_projeto_2 ]</div>
-                        <span class="text-xs font-semibold tracking-wider text-purple-400 uppercase block mb-1">E-COMMERCE / UI</span>
-                        <h3 class="text-xl font-bold text-white mb-3 group-hover:text-cyan-300 transition-colors">Experi&ecirc;ncia Imersiva de Produto</h3>
-                        <p class="text-slate-400 font-light text-sm leading-relaxed mb-6">Otimiza&ccedil;&atilde;o de renderiza&ccedil;&atilde;o asset-heavy com foco em Core Web Vitals e transi&ccedil;&otilde;es de estado ultra suaves.</p>
+                        <div class="w-full h-48 rounded-xl overflow-hidden relative border border-slate-800/80 mb-6 bg-[#0a0a16]">
+                            <img 
+                                src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=900&auto=format&fit=crop" 
+                                alt="Relógio de luxo minimalista com zoom ultra HD" 
+                                class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100"
+                            />
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#0f0f23] via-transparent to-transparent"></div>
+                            <div class="absolute top-3 left-3 bg-[#060613]/80 backdrop-blur-md px-2.5 py-1 rounded-md border border-amber-500/30 text-[10px] font-mono text-amber-300">
+                                <span>Ultra HD &bull; 4K Zoom</span>
+                            </div>
+                        </div>
+
+                        <span class="text-xs font-semibold tracking-wider text-amber-400 uppercase block mb-1">E-COMMERCE / UI LUXURY</span>
+                        <h3 class="text-xl font-bold text-white mb-3 group-hover:text-amber-300 transition-colors flex justify-between items-center">
+                            Vitrine Joias &amp; Rel&oacute;gios Ultra HD
+                            <span class="text-xs text-amber-400 font-normal group-hover:underline">Executar App &rarr;</span>
+                        </h3>
+                        <p class="text-slate-400 font-light text-sm leading-relaxed mb-6">
+                            Inspe&ccedil;&atilde;o interativa de microdetalhes, altern&acirc;ncia suave de materiais nobres e renderiza&ccedil;&atilde;o asset-heavy otimizada para Core Web Vitals.
+                        </p>
                     </div>
-                    <div class="flex gap-2">
-                        <span class="text-xs font-medium px-3 py-1 bg-slate-900 border border-slate-800 text-slate-300 rounded-md">Next.js</span>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="text-xs font-medium px-3 py-1 bg-slate-900 border border-slate-800 text-slate-300 rounded-md">Vue.js 3</span>
                         <span class="text-xs font-medium px-3 py-1 bg-slate-900 border border-slate-800 text-slate-300 rounded-md">Tailwind</span>
+                        <span class="text-xs font-medium px-3 py-1 bg-slate-900 border border-slate-800 text-slate-300 rounded-md">Canvas/Zoom</span>
                     </div>
                 </div>
 
@@ -215,7 +232,7 @@
         </footer>
     </div>
 
-    <!-- VIEW: SUBPÁGINA DO DASHBOARD FINANCEIRO COM CAMINHO PARA A PASTA PROJETOS -->
+    <!-- VIEW: SUBPÁGINA DO DASHBOARD FINANCEIRO -->
     <div id="dashboard-view" class="subpage-view w-full hidden opacity-0 z-20 relative">
         <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 py-8">
             <div class="flex items-center justify-between mb-6 flex-wrap gap-3">
@@ -231,6 +248,26 @@
 
             <div id="dashboard-frame-container" class="w-full min-h-[85vh] rounded-2xl overflow-hidden border border-slate-800/80 bg-[#060613]">
                 <iframe id="dashboard-iframe" src="projetos/dashboard.html" class="w-full min-h-[85vh] border-0 rounded-2xl bg-transparent" loading="lazy"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- VIEW: SUBPÁGINA DA VITRINE DE RELÓGIOS ULTRA HD -->
+    <div id="vitrine-relogio-view" class="subpage-view w-full hidden opacity-0 z-20 relative">
+        <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 py-8">
+            <div class="flex items-center justify-between mb-6 flex-wrap gap-3">
+                <button onclick="closeSubpage()" class="text-xs font-semibold text-slate-400 hover:text-white transition-colors duration-300 flex items-center gap-2 group cursor-pointer bg-[#0f0f23] px-3.5 py-2 rounded-xl border border-slate-800">
+                    <span class="transform group-hover:-translate-x-1 transition-transform">&larr;</span> Voltar para a Home
+                </button>
+
+                <a href="projetos/vitrine-relogio.html" target="_blank" class="text-xs font-medium text-amber-400 hover:text-amber-300 bg-amber-950/40 border border-amber-900/50 px-3 py-2 rounded-xl flex items-center gap-1.5 transition-colors">
+                    <span>Abrir em tela cheia</span>
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                </a>
+            </div>
+
+            <div class="w-full min-h-[85vh] rounded-2xl overflow-hidden border border-slate-800/80 bg-[#050508]">
+                <iframe id="vitrine-iframe" src="projetos/vitrine-relogio.html" class="w-full min-h-[85vh] border-0 rounded-2xl bg-transparent" loading="lazy"></iframe>
             </div>
         </div>
     </div>
@@ -334,12 +371,19 @@
         }
 
         function abrirDashboardApp() {
-            // Garante o carregamento do iframe ao clicar
             const iframe = document.getElementById('dashboard-iframe');
             if (iframe && (!iframe.src || iframe.src === 'about:blank' || iframe.src.endsWith('#'))) {
                 iframe.src = 'projetos/dashboard.html';
             }
             openView('#dashboard-view');
+        }
+
+        function abrirVitrineRelogioApp() {
+            const iframe = document.getElementById('vitrine-iframe');
+            if (iframe && (!iframe.src || iframe.src === 'about:blank' || iframe.src.endsWith('#'))) {
+                iframe.src = 'projetos/vitrine-relogio.html';
+            }
+            openView('#vitrine-relogio-view');
         }
 
         function carregarEAbriArtigo(titulo, data, categoria, urlArquivo) {
