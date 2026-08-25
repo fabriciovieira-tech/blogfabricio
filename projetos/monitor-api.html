@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitor de APIs e latência | Serra Tecnologia</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #060613; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(15, 15, 35, 0.6); }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #312e81; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #4338ca; }
+    </style>
+</head>
+<body class="text-slate-100 min-h-screen relative overflow-x-hidden selection:bg-cyan-500/30">
+
+    <!-- CABEÇALHO -->
+    <header class="w-full border-b border-slate-800/80 bg-[#0a0a1a]/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-4">
+                <a href="../index.html" class="p-2 bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-lg text-slate-400 hover:text-white transition-all">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                </a>
+                <div>
+                    <span class="text-[10px] font-mono tracking-widest text-cyan-400 uppercase font-semibold">Micro-aplicação &bull; Ferramenta</span>
+                    <h1 class="text-xl font-bold text-white flex items-center gap-2">
+                        Monitor de APIs e latência
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-950/60 text-emerald-400 border border-emerald-800/50">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse mr-1.5"></span> Live
+                        </span>
+                    </h1>
+                </div>
+            </div>
+
+            <!-- CONTROLES -->
+            <div class="flex flex-wrap items-center gap-3">
+                <div class="flex items-center bg-slate-900/90 border border-slate-800 rounded-lg p-1 text-xs">
+                    <span class="text-slate-400 px-2">Intervalo:</span>
+                    <button onclick="setPollingInterval(1000)" id="int-1s" class="px-2.5 py-1 rounded bg-indigo-600 text-white font-medium">1s</button>
+                    <button onclick="setPollingInterval(3000)" id="int-3s" class="px-2.5 py-1 rounded text-slate-400 hover:text-white">3s</button>
+                    <button onclick="setPollingInterval(5000)" id="int-5s" class="px-2.5 py-1 rounded text-slate-400 hover:text-white">5s</button>
+                </div>
+
+                <button id="toggle-poll-btn" onclick="togglePolling()" class="px-3.5 py-1.5 bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-200 text-xs font-medium rounded-lg flex items-center gap-2 transition-all">
+                    <span id="poll-icon-dot" class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    <span id="poll-status-text">Pausar</span>
+                </button>
+
+                <button onclick="exportToCSV()" class="px-3.5 py-1.5 bg-indigo-900/40 hover:bg-indigo-900/60 border border-indigo-700/50 text-indigo-300 text-xs font-medium rounded-lg flex items-center gap-1.5 transition-all">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    Exportar CSV
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-8 space-y-8">
+
+        <!-- CARDS DE MÉTRICAS -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-[#0f0f23]/70 border border-slate-800/80 rounded-xl p-5 backdrop-blur-md">
+                <span class="text-xs font-medium text-slate-400">Total monitorado</span>
+                <div class="mt-2 flex items-baseline justify-between">
+                    <span id="metric-total" class="text-2xl font-bold text-white font-mono">0</span>
+                    <span class="text-xs text-indigo-400 font-mono">serviços</span>
+                </div>
+            </div>
+
+            <div class="bg-[#0f0f23]/70 border border-slate-800/80 rounded-xl p-5 backdrop-blur-md">
+                <span class="text-xs font-medium text-slate-400">Latência média</span>
+                <div class="mt-2 flex items-baseline justify-between">
+                    <span id="metric-avg-latency" class="text-2xl font-bold text-cyan-400 font-mono">0 ms</span>
+                    <span class="text-xs text-slate-500 font-mono">tempo real</span>
+                </div>
+            </div>
+
+            <div class="bg-[#0f0f23]/70 border border-slate-800/80 rounded-xl p-5 backdrop-blur-md">
+                <span class="text-xs font-medium text-slate-400">Excelente (&le; 100ms)</span>
+                <div class="mt-2 flex items-baseline justify-between">
+                    <span id="metric-green-count" class="text-2xl font-bold text-emerald-400 font-mono">0</span>
+                    <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_8px_#10b981]"></span>
+                </div>
+            </div>
+
+            <div class="bg-[#0f0f23]/70 border border-slate-800/80 rounded-xl p-5 backdrop-blur-md">
+                <span class="text-xs font-medium text-slate-400">Atenção (&gt; 100ms / &gt; 600ms)</span>
+                <div class="mt-2 flex items-baseline justify-between">
+                    <div class="flex items-center gap-3">
+                        <span id="metric-yellow-count" class="text-xl font-bold text-amber-400 font-mono">0</span>
+                        <span class="text-slate-600">/</span>
+                        <span id="metric-red-count" class="text-xl font-bold text-rose-400 font-mono">0</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <span class="inline-block w-2.5 h-2.5 rounded-full bg-amber-400 shadow-[0_0_8px_#fbbf24]"></span>
+                        <span class="inline-block w-2.5 h-2.5 rounded-full bg-rose-500 shadow-[0_0_8px_#f43f5e]"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FORMULÁRIO DE ADIÇÃO DE NOVO ENDEREÇO -->
+        <div class="bg-[#0f0f23]/60 border border-slate-800/70 rounded-2xl p-6 backdrop-blur-md">
+            <h2 class="text-sm font-semibold text-slate-200 mb-4 flex items-center gap-2">
+                <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                Adicionar novo endpoint para monitoramento
+            </h2>
+            <form id="add-endpoint-form" onsubmit="handleAddEndpoint(event)" class="grid grid-cols-1 sm:grid-cols-12 gap-3">
+                <div class="sm:col-span-4">
+                    <input type="text" id="input-name" required placeholder="Nome do serviço (ex: API Cloud)" 
+                        class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3.5 py-2 text-xs text-slate-200 focus:outline-none focus:border-indigo-500 transition-colors">
+                </div>
+                <div class="sm:col-span-6">
+                    <input type="text" id="input-url" required placeholder="Endereço URL ou Host (ex: api.github.com ou https://exemplo.com)" 
+                        class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3.5 py-2 text-xs text-slate-200 focus:outline-none focus:border-indigo-500 transition-colors">
+                </div>
+                <div class="sm:col-span-2">
+                    <button type="submit" id="btn-submit" class="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs rounded-lg transition-all shadow-[0_0_15px_rgba(99,102,241,0.3)]">
+                        Testar e monitorar
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- TABELA DE ENDEREÇOS E LATÊNCIAS -->
+        <div class="bg-[#0f0f23]/80 border border-slate-800/80 rounded-2xl p-6 backdrop-blur-md">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                <div>
+                    <h2 class="text-lg font-bold text-white">Status dos serviços e classificação de latência</h2>
+                    <p class="text-xs text-slate-400 font-light mt-1">
+                        Sinalização visual:
+                        <span class="text-emerald-400 font-medium ml-1">&bull; Verde (&le; 100ms)</span>
+                        <span class="text-amber-400 font-medium ml-1">&bull; Amarelo (101ms a 600ms)</span>
+                        <span class="text-rose-400 font-medium ml-1">&bull; Vermelho (&gt; 600ms / Erro)</span>
+                    </p>
+                </div>
+
+                <div>
+                    <input type="text" id="search-filter" oninput="renderTable()" placeholder="Filtrar por nome ou URL..." 
+                        class="bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-cyan-500">
+                </div>
+            </div>
+
+            <div class="overflow-x-auto custom-scrollbar">
+                <table class="w-full text-left text-xs">
+                    <thead class="bg-slate-950/80 text-slate-400 font-mono border-b border-slate-800">
+                        <tr>
+                            <th class="py-3 px-4">Status</th>
+                            <th class="py-3 px-4">Serviço</th>
+                            <th class="py-3 px-4">Endereço</th>
+                            <th class="py-3 px-4">Latência atual</th>
+                            <th class="py-3 px-4">Min / Máx / Média</th>
+                            <th class="py-3 px-4">Disponibilidade</th>
+                            <th class="py-3 px-4 text-right">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="endpoint-table-body" class="divide-y divide-slate-800/60 font-mono">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- GRÁFICO HISTÓRICO DE LATÊNCIA -->
+        <div class="bg-[#0f0f23]/80 border border-slate-800/80 rounded-2xl p-6 backdrop-blur-md">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                <div>
+                    <h2 class="text-lg font-bold text-white">Histórico de oscilação de latência</h2>
+                    <p class="text-xs text-slate-400 font-light mt-0.5">Telemetria gráfica em tempo real.</p>
+                </div>
+                <div class="text-xs text-slate-500 font-mono" id="chart-points-count">
+                    Pontos: 0
+                </div>
+            </div>
+            <div class="w-full h-[300px] relative">
+                <canvas id="latencyChart"></canvas>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- MOTOR JAVASCRIPT CORRIGIDO -->
+    <script>
+        const colorPalette = ['#22d3ee', '#38bdf8', '#818cf8', '#a78bfa', '#f472b6', '#34d399', '#fbbf24'];
+
+        let endpoints = [
+            {
+                id: '1',
+                name: 'API Cloud Central',
+                url: 'https://api.github.com',
+                currentLatency: 0,
+                minLatency: 0,
+                maxLatency: 0,
+                totalChecks: 0,
+                failedChecks: 0,
+                history: [],
+                active: true
+            },
+            {
+                id: '2',
+                name: 'CDN Cloudflare',
+                url: 'https://cdnjs.cloudflare.com',
+                currentLatency: 0,
+                minLatency: 0,
+                maxLatency: 0,
+                totalChecks: 0,
+                failedChecks: 0,
+                history: [],
+                active: true
+            }
+        ];
+
+        let pollingIntervalMs = 1000;
+        let isPollingActive = true;
+        let timerId = null;
+        let chartInstance = null;
+
+        function normalizeUrl(url) {
+            let clean = url.trim();
+            if (!/^https?:\/\//i.test(clean)) {
+                clean = 'https://' + clean;
+            }
+            return clean;
+        }
+
+        async function pingUrl(url) {
+            const start = performance.now();
+            const target = normalizeUrl(url);
+            const controller = new AbortController();
+            const timeout = setTimeout(() => controller.abort(), 4000);
+
+            try {
+                // Requisição com timestamp anti-cache
+                const cacheBuster = (target.includes('?') ? '&' : '?') + '_t=' + Date.now();
+                await fetch(target + cacheBuster, {
+                    method: 'GET',
+                    mode: 'no-cors',
+                    cache: 'no-store',
+                    signal: controller.signal
+                });
+                clearTimeout(timeout);
+                return Math.max(1, Math.round(performance.now() - start));
+            } catch (err) {
+                clearTimeout(timeout);
+                const duration = Math.round(performance.now() - start);
+                return duration > 600 ? duration : 999;
+            }
+        }
+
+        async function measureEndpoint(ep) {
+            const lat = await pingUrl(ep.url);
+            const nowStr = new Date().toLocaleTimeString('pt-BR');
+
+            ep.currentLatency = lat;
+            ep.totalChecks++;
+
+            if (lat > 600) ep.failedChecks++;
+            if (ep.minLatency === 0 || lat < ep.minLatency) ep.minLatency = lat;
+            if (lat > ep.maxLatency) ep.maxLatency = lat;
+
+            ep.history.push({ time: nowStr, latency: lat });
+            if (ep.history.length > 20) ep.history.shift();
+
+            return lat;
+        }
+
+        function initChart() {
+            const canvas = document.getElementById('latencyChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
+            const datasets = endpoints.map((ep, idx) => ({
+                label: ep.name,
+                data: ep.history.map(h => h.latency),
+                borderColor: colorPalette[idx % colorPalette.length],
+                backgroundColor: 'transparent',
+                borderWidth: 2,
+                tension: 0.25,
+                pointRadius: 2
+            }));
+
+            const labels = endpoints[0]?.history.map(h => h.time) || [];
+
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: { labels, datasets },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: false,
+                    plugins: {
+                        legend: { labels: { color: '#94a3b8', font: { family: 'Inter', size: 11 } } }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(51, 65, 85, 0.25)' },
+                            ticks: { color: '#64748b', font: { family: 'JetBrains Mono', size: 10 } }
+                        },
+                        y: {
+                            grid: { color: 'rgba(51, 65, 85, 0.25)' },
+                            ticks: { color: '#64748b', font: { family: 'JetBrains Mono', size: 10 } },
+                            title: { display: true, text: 'ms', color: '#64748b' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderTable() {
+            const tableBody = document.getElementById('endpoint-table-body');
+            const searchVal = document.getElementById('search-filter')?.value.toLowerCase() || '';
+            tableBody.innerHTML = '';
+
+            let totalLat = 0;
+            let greenCount = 0;
+            let yellowCount = 0;
+            let redCount = 0;
+            let visibleCount = 0;
+
+            endpoints.forEach(ep => {
+                if (searchVal && !ep.name.toLowerCase().includes(searchVal) && !ep.url.toLowerCase().includes(searchVal)) {
+                    return;
+                }
+
+                visibleCount++;
+                totalLat += ep.currentLatency;
+
+                let dotColor = 'bg-emerald-500 shadow-[0_0_8px_#10b981]';
+                let textColor = 'text-emerald-400';
+                let statusLabel = 'Ótimo';
+
+                if (ep.currentLatency === 0) {
+                    dotColor = 'bg-slate-500';
+                    textColor = 'text-slate-400';
+                    statusLabel = 'Testando...';
+                } else if (ep.currentLatency <= 100) {
+                    greenCount++;
+                } else if (ep.currentLatency <= 600) {
+                    dotColor = 'bg-amber-400 shadow-[0_0_8px_#fbbf24]';
+                    textColor = 'text-amber-400';
+                    statusLabel = 'Atenção';
+                    yellowCount++;
+                } else {
+                    dotColor = 'bg-rose-500 shadow-[0_0_8px_#f43f5e]';
+                    textColor = 'text-rose-400';
+                    statusLabel = 'Crítico';
+                    redCount++;
+                }
+
+                const sum = ep.history.reduce((acc, h) => acc + h.latency, 0);
+                const avg = ep.history.length ? Math.round(sum / ep.history.length) : ep.currentLatency;
+                const uptime = ep.totalChecks ? (((ep.totalChecks - ep.failedChecks) / ep.totalChecks) * 100).toFixed(1) : '100.0';
+
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-900/40 transition-colors border-b border-slate-800/40';
+                tr.innerHTML = `
+                    <td class="py-3.5 px-4">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full ${dotColor}"></span>
+                            <span class="${textColor} font-semibold text-[11px]">${statusLabel}</span>
+                        </div>
+                    </td>
+                    <td class="py-3.5 px-4 text-white font-medium">${ep.name}</td>
+                    <td class="py-3.5 px-4 text-slate-400 truncate max-w-[220px]" title="${ep.url}">${ep.url}</td>
+                    <td class="py-3.5 px-4 font-bold ${textColor}">${ep.currentLatency > 0 ? ep.currentLatency + ' ms' : '...'}</td>
+                    <td class="py-3.5 px-4 text-slate-400">${ep.minLatency} / ${ep.maxLatency} / ${avg} ms</td>
+                    <td class="py-3.5 px-4 text-slate-300">${uptime}%</td>
+                    <td class="py-3.5 px-4 text-right space-x-2">
+                        <button onclick="testSingleEndpoint('${ep.id}')" class="text-cyan-400 hover:text-cyan-300 transition-colors p-1" title="Testar agora">Testar</button>
+                        <button onclick="removeEndpoint('${ep.id}')" class="text-slate-500 hover:text-rose-400 transition-colors p-1" title="Remover">&times;</button>
+                    </td>
+                `;
+                tableBody.appendChild(tr);
+            });
+
+            document.getElementById('metric-total').textContent = visibleCount;
+            document.getElementById('metric-avg-latency').textContent = visibleCount && totalLat > 0 ? Math.round(totalLat / visibleCount) + ' ms' : '0 ms';
+            document.getElementById('metric-green-count').textContent = greenCount;
+            document.getElementById('metric-yellow-count').textContent = yellowCount;
+            document.getElementById('metric-red-count').textContent = redCount;
+        }
+
+        function updateChartData() {
+            if (!chartInstance) return;
+
+            const maxPoints = 15;
+            const latestTime = new Date().toLocaleTimeString('pt-BR');
+
+            if (chartInstance.data.labels.length >= maxPoints) {
+                chartInstance.data.labels.shift();
+            }
+            chartInstance.data.labels.push(latestTime);
+
+            endpoints.forEach((ep, idx) => {
+                if (!chartInstance.data.datasets[idx]) {
+                    chartInstance.data.datasets.push({
+                        label: ep.name,
+                        data: [],
+                        borderColor: colorPalette[idx % colorPalette.length],
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        tension: 0.25,
+                        pointRadius: 2
+                    });
+                }
+                const ds = chartInstance.data.datasets[idx];
+                if (ds.data.length >= maxPoints) {
+                    ds.data.shift();
+                }
+                ds.data.push(ep.currentLatency);
+            });
+
+            document.getElementById('chart-points-count').textContent = `Pontos: ${chartInstance.data.labels.length}`;
+            chartInstance.update();
+        }
+
+        async function pollAll() {
+            if (!isPollingActive) return;
+
+            for (const ep of endpoints) {
+                if (ep.active) {
+                    await measureEndpoint(ep);
+                }
+            }
+
+            renderTable();
+            updateChartData();
+        }
+
+        async function handleAddEndpoint(e) {
+            e.preventDefault();
+            const nameInput = document.getElementById('input-name');
+            const urlInput = document.getElementById('input-url');
+
+            const name = nameInput.value.trim();
+            const rawUrl = urlInput.value.trim();
+            if (!name || !rawUrl) return;
+
+            const normalized = normalizeUrl(rawUrl);
+
+            const newEp = {
+                id: Date.now().toString(),
+                name: name,
+                url: normalized,
+                currentLatency: 0,
+                minLatency: 0,
+                maxLatency: 0,
+                totalChecks: 0,
+                failedChecks: 0,
+                history: [],
+                active: true
+            };
+
+            endpoints.push(newEp);
+            nameInput.value = '';
+            urlInput.value = '';
+
+            // Teste imediato ao adicionar
+            renderTable();
+            await measureEndpoint(newEp);
+            renderTable();
+            initChart();
+            updateChartData();
+        }
+
+        async function testSingleEndpoint(id) {
+            const ep = endpoints.find(e => e.id === id);
+            if (ep) {
+                await measureEndpoint(ep);
+                renderTable();
+                updateChartData();
+            }
+        }
+
+        function removeEndpoint(id) {
+            endpoints = endpoints.filter(e => e.id !== id);
+            renderTable();
+            initChart();
+        }
+
+        function setPollingInterval(ms) {
+            pollingIntervalMs = ms;
+            ['1s', '3s', '5s'].forEach(id => {
+                const btn = document.getElementById(`int-${id}`);
+                if (btn) btn.className = 'px-2.5 py-1 rounded text-slate-400 hover:text-white';
+            });
+            const activeBtn = document.getElementById(`int-${ms / 1000}s`);
+            if (activeBtn) activeBtn.className = 'px-2.5 py-1 rounded bg-indigo-600 text-white font-medium';
+
+            startPolling();
+        }
+
+        function togglePolling() {
+            isPollingActive = !isPollingActive;
+            const statusText = document.getElementById('poll-status-text');
+            const dot = document.getElementById('poll-icon-dot');
+
+            if (isPollingActive) {
+                statusText.textContent = 'Pausar';
+                dot.className = 'w-2 h-2 rounded-full bg-emerald-400';
+            } else {
+                statusText.textContent = 'Retomar';
+                dot.className = 'w-2 h-2 rounded-full bg-rose-500';
+            }
+        }
+
+        function startPolling() {
+            if (timerId) clearInterval(timerId);
+            timerId = setInterval(pollAll, pollingIntervalMs);
+        }
+
+        function exportToCSV() {
+            let csv = "data:text/csv;charset=utf-8,ID,Nome,URL,Latencia_ms,Min_ms,Max_ms,Erros,Total_Checks\n";
+            endpoints.forEach(ep => {
+                csv += `${ep.id},"${ep.name}","${ep.url}",${ep.currentLatency},${ep.minLatency},${ep.maxLatency},${ep.failedChecks},${ep.totalChecks}\n`;
+            });
+            const link = document.createElement("a");
+            link.href = encodeURI(csv);
+            link.download = `metricas_latencia_${Date.now()}.csv`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            initChart();
+            renderTable();
+            await pollAll();
+            startPolling();
+        });
+    </script>
+</body>
+</html>
