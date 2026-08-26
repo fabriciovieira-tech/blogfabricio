@@ -113,7 +113,7 @@
                             </div>
                         </div>
 
-                        <span class="text-xs font-semibold tracking-wider text-pink-500 uppercase block mb-1">Web app / finan&ccedil;as</span>
+                        <span class="text-xs font-semibold tracking-wider text-pink-500 uppercase block mb-1">Web app/finan&ccedil;as</span>
                         <h3 class="text-xl font-bold text-white mb-3 group-hover:text-cyan-300 transition-colors flex justify-between items-center">
                             Dashboard financeiro din&acirc;mico
                             <span class="text-xs text-indigo-400 font-normal group-hover:underline">Executar app &rarr;</span>
@@ -192,7 +192,7 @@
                     </div>
                 </div>
 
-                <!-- PROJETO 4: GERENCIADOR DE TAREFAS E HÁBITOS (STREAK LOOP) -->
+                <!-- PROJETO 4: GERENCIADOR DE TAREFAS E HÁBITOS -->
                 <div onclick="abrirTarefasHabitosApp()" class="snap-start shrink-0 w-[85vw] sm:w-[450px] bg-[#0f0f23]/60 border border-slate-800/60 rounded-2xl p-6 backdrop-blur-md hover:border-emerald-500/40 transition-all duration-500 group flex flex-col justify-between cursor-pointer transform hover:-translate-y-1">
                     <div>
                         <div class="w-full h-48 rounded-xl overflow-hidden relative border border-slate-800/80 mb-6 bg-[#0a0a16]">
@@ -328,7 +328,7 @@
         </div>
     </div>
 
-    <!-- VIEW: SUBPÁGINA DO GERENCIADOR DE TAREFAS E HÁBITOS -->
+    <!-- VIEW: SUBPÁGINA DO GERENCIADOR DE TAREFAS E HÁBITOS (CORRIGIDA) -->
     <div id="tarefas-habitos-view" class="subpage-view w-full hidden opacity-0 z-20 relative">
         <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 py-8">
             <div class="flex items-center justify-between mb-6 flex-wrap gap-3">
@@ -421,23 +421,36 @@
         function openView(viewSelector) {
             window.scrollTo({ top: 0, behavior: 'instant' });
             
-            let currentView = currentActiveView || "#main-view";
-            currentActiveView = viewSelector;
+            const currentViewId = (currentActiveView || "#main-view").replace('#', '');
+            const targetViewId = viewSelector.replace('#', '');
             
-            gsap.to(currentView, { 
-                opacity: 0, 
-                duration: 0.3, 
-                onComplete: () => {
-                    document.getElementById(currentView.replace('#','')).classList.add("hidden");
-                    const targetView = document.querySelector(viewSelector);
-                    targetView.classList.remove("hidden");
-                    gsap.to(viewSelector, { opacity: 1, duration: 0.3 });
+            const currentEl = document.getElementById(currentViewId);
+            const targetEl = document.getElementById(targetViewId);
+
+            if (!targetEl) return;
+            currentActiveView = viewSelector;
+
+            if (window.gsap && currentEl) {
+                gsap.to(currentEl, { 
+                    opacity: 0, 
+                    duration: 0.25, 
+                    onComplete: () => {
+                        currentEl.classList.add("hidden");
+                        targetEl.classList.remove("hidden");
+                        gsap.fromTo(targetEl, { opacity: 0 }, { opacity: 1, duration: 0.25 });
+                    }
+                });
+            } else {
+                if (currentEl) {
+                    currentEl.classList.add("hidden");
+                    currentEl.style.opacity = '0';
                 }
-            });
+                targetEl.classList.remove("hidden");
+                targetEl.style.opacity = '1';
+            }
         }
 
         function closeSubpage() {
-            if (!currentActiveView) return;
             openView('#main-view');
             currentActiveView = null;
         }
@@ -448,7 +461,7 @@
 
         function abrirDashboardApp() {
             const iframe = document.getElementById('dashboard-iframe');
-            if (iframe && (!iframe.src || iframe.src === 'about:blank' || iframe.src.endsWith('#'))) {
+            if (iframe && (!iframe.src || iframe.src.endsWith('#') || iframe.src === 'about:blank')) {
                 iframe.src = 'projetos/dashboard.html';
             }
             openView('#dashboard-view');
@@ -456,7 +469,7 @@
 
         function abrirVitrineRelogioApp() {
             const iframe = document.getElementById('vitrine-iframe');
-            if (iframe && (!iframe.src || iframe.src === 'about:blank' || iframe.src.endsWith('#'))) {
+            if (iframe && (!iframe.src || iframe.src.endsWith('#') || iframe.src === 'about:blank')) {
                 iframe.src = 'projetos/vitrine-relogio.html';
             }
             openView('#vitrine-relogio-view');
@@ -464,7 +477,7 @@
 
         function abrirMonitorApiApp() {
             const iframe = document.getElementById('monitor-api-iframe');
-            if (iframe && (!iframe.src || iframe.src === 'about:blank' || iframe.src.endsWith('#'))) {
+            if (iframe && (!iframe.src || iframe.src.endsWith('#') || iframe.src === 'about:blank')) {
                 iframe.src = 'projetos/monitor-api.html';
             }
             openView('#monitor-api-view');
@@ -472,7 +485,7 @@
 
         function abrirTarefasHabitosApp() {
             const iframe = document.getElementById('tarefas-habitos-iframe');
-            if (iframe && (!iframe.src || iframe.src === 'about:blank' || iframe.src.endsWith('#'))) {
+            if (iframe) {
                 iframe.src = 'projetos/tarefas-habitos.html';
             }
             openView('#tarefas-habitos-view');
