@@ -2,193 +2,319 @@
 <html lang="pt-BR" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=5.0"
+    >
+
+    <!-- Restringe a injeção de scripts maliciosos e limita origens -->
+    <meta
+        http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; media-src 'self' data:;"
+    >
+
     <title>Gerenciador de tarefas e hábitos | Serra Tecnologia</title>
+
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/dexie@3/dist/dexie.min.js"></script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet"
+    >
+
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #060613; }
-        .font-mono { font-family: 'JetBrains Mono', monospace; }
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(15, 15, 35, 0.6); }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #065f46; border-radius: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #047857; }
+        body {
+            font-family: "Inter", sans-serif;
+            background-color: #060613;
+        }
+
+        .font-mono {
+            font-family: "JetBrains Mono", monospace;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(15, 15, 35, 0.6);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #065f46;
+            border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #047857;
+        }
     </style>
 </head>
+
 <body class="text-slate-100 min-h-screen relative overflow-x-hidden selection:bg-emerald-500/30">
 
-    <!-- CABEÇALHO MOBILE FRIENDLY (SEM BOTO DUPLICADO) -->
     <header class="w-full border-b border-slate-800/80 bg-[#0a0a1a]/80 backdrop-blur-md sticky top-0 z-50">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div class="space-y-1.5">
-                <span class="text-[10px] sm:text-xs font-mono tracking-widest text-emerald-400 uppercase font-semibold block">
-                    Mobile / h&iacute;brido &bull; PWA
-                </span>
-                <div class="flex flex-wrap items-center gap-2.5">
-                    <h1 class="text-lg sm:text-xl md:text-2xl font-bold text-white tracking-tight">
-                        Rastreador de h&aacute;bitos em sequ&ecirc;ncia
-                    </h1>
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-emerald-950/60 text-emerald-400 border border-emerald-800/50 shrink-0">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse mr-1.5"></span> 100% offline
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex flex-wrap justify-between items-center gap-4">
+
+            <!-- O botão interno de voltar foi removido daqui -->
+            <div class="flex flex-wrap items-center gap-3 sm:gap-4">
+                <div class="min-w-[200px]">
+                    <span class="text-[10px] font-mono tracking-widest text-emerald-400 uppercase font-semibold block mb-1">
+                        Mobile / híbrido &bull; PWA
                     </span>
+
+                    <h1 class="text-lg sm:text-xl font-bold text-white flex flex-wrap items-center gap-2 leading-tight">
+                        Rastreador de hábitos
+
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-medium bg-emerald-950/60 text-emerald-400 border border-emerald-800/50 shrink-0">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse mr-1.5"></span>
+                            100% offline
+                        </span>
+                    </h1>
                 </div>
             </div>
 
-            <div class="flex items-center justify-between sm:justify-end gap-3 pt-1 sm:pt-0">
-                <button onclick="exportToCSV()" class="w-full sm:w-auto px-4 py-2 bg-emerald-900/40 hover:bg-emerald-900/60 border border-emerald-700/50 text-emerald-300 text-xs font-medium rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm">
-                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                    <span>Exportar relat&oacute;rio CSV</span>
-                </button>
-                <span id="current-date-badge" class="text-xs font-mono text-slate-400 bg-slate-900/80 border border-slate-800 px-3 py-2 rounded-xl hidden md:inline-block shrink-0"></span>
+            <div class="flex items-center w-full sm:w-auto justify-end">
+                <span
+                    id="current-date-badge"
+                    class="text-[10px] sm:text-xs font-mono text-slate-400 bg-slate-900/80 border border-slate-800 px-3 py-1.5 rounded-lg whitespace-nowrap"
+                ></span>
             </div>
         </div>
     </header>
 
-    <main class="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
-
-        <!-- SOBRE A APLICAÇO -->
-        <section class="bg-[#0c0c1e]/70 border border-slate-800/80 p-5 sm:p-6 rounded-2xl backdrop-blur-sm relative overflow-hidden">
-            <div class="max-w-4xl space-y-2.5 sm:space-y-3">
-                <h2 class="text-xs sm:text-sm font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    Sobre a aplica&ccedil;&atilde;o
-                </h2>
-                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-light">
-                    Ferramenta PWA focada no princ&iacute;pio de consist&ecirc;ncia di&aacute;ria ininterrupta (streak loop). Permite gerenciar micro-h&aacute;bitos por categorias, acompanhar o mapa de calor dos &uacute;ltimos 14 dias com feedback sonoro ao realizar check-ins, zerar sequ&ecirc;ncias individualmente e exportar m&eacute;tricas de desempenho para planilhas CSV.
-                </p>
-                <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 pt-1">
-                    <span class="text-[11px] sm:text-xs text-slate-400 font-medium mr-1">Tecnologias:</span>
-                    <span class="text-[11px] sm:text-xs px-2 py-0.5 rounded-md bg-slate-900 border border-slate-800 text-emerald-300 font-mono">TypeScript / JS</span>
-                    <span class="text-[11px] sm:text-xs px-2 py-0.5 rounded-md bg-slate-900 border border-slate-800 text-teal-300 font-mono">IndexedDB (Dexie.js)</span>
-                    <span class="text-[11px] sm:text-xs px-2 py-0.5 rounded-md bg-slate-900 border border-slate-800 text-cyan-300 font-mono">Web Audio API</span>
-                    <span class="text-[11px] sm:text-xs px-2 py-0.5 rounded-md bg-slate-900 border border-slate-800 text-purple-300 font-mono">PWA</span>
-                    <span class="text-[11px] sm:text-xs px-2 py-0.5 rounded-md bg-slate-900 border border-slate-800 text-slate-300 font-mono">Tailwind</span>
-                </div>
-            </div>
-        </section>
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6 sm:space-y-8">
 
         <!-- PAINEL DE MÉTRICAS GERAIS -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div class="bg-[#0f0f23]/70 border border-slate-800/80 rounded-xl p-5 backdrop-blur-md">
-                <span class="text-xs font-medium text-slate-400">Progresso de hoje</span>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+
+            <div class="bg-[#0f0f23]/70 border border-slate-800/80 rounded-xl p-4 sm:p-5 backdrop-blur-md">
+                <span class="text-[10px] sm:text-xs font-medium text-slate-400">
+                    Progresso de hoje
+                </span>
+
                 <div class="mt-2 flex items-baseline justify-between">
-                    <span id="stat-progress" class="text-2xl font-bold text-emerald-400 font-mono">0%</span>
-                    <span id="stat-completed-count" class="text-xs text-slate-500 font-mono">0/0 conclu&iacute;dos</span>
+                    <span
+                        id="stat-progress"
+                        class="text-xl sm:text-2xl font-bold text-emerald-400 font-mono"
+                    >
+                        0%
+                    </span>
+
+                    <span
+                        id="stat-completed-count"
+                        class="text-[10px] sm:text-xs text-slate-500 font-mono"
+                    >
+                        0/0 concluídos
+                    </span>
                 </div>
+
                 <div class="w-full bg-slate-950 rounded-full h-1.5 mt-3 overflow-hidden border border-slate-800">
-                    <div id="stat-progress-bar" class="bg-gradient-to-r from-emerald-500 to-teal-400 h-1.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                    <div
+                        id="stat-progress-bar"
+                        class="bg-gradient-to-r from-emerald-500 to-teal-400 h-1.5 rounded-full transition-all duration-500"
+                        style="width: 0%"
+                    ></div>
                 </div>
             </div>
 
-            <div class="bg-[#0f0f23]/70 border border-slate-800/80 rounded-xl p-5 backdrop-blur-md">
-                <span class="text-xs font-medium text-slate-400">Maior sequ&ecirc;ncia ativa</span>
+            <div class="bg-[#0f0f23]/70 border border-slate-800/80 rounded-xl p-4 sm:p-5 backdrop-blur-md">
+                <span class="text-[10px] sm:text-xs font-medium text-slate-400">
+                    Maior sequência ativa
+                </span>
+
                 <div class="mt-2 flex items-baseline justify-between">
-                    <span id="stat-max-streak" class="text-2xl font-bold text-amber-400 font-mono">0 dias</span>
-                    <span class="text-xs text-amber-500 font-mono">&bull; recorde atual</span>
+                    <span
+                        id="stat-max-streak"
+                        class="text-xl sm:text-2xl font-bold text-amber-400 font-mono"
+                    >
+                        0 dias
+                    </span>
+
+                    <span class="text-[10px] sm:text-xs text-amber-500 font-mono">
+                        &bull; recorde atual
+                    </span>
+                </div>
+            </div>
+
+            <div class="bg-[#0f0f23]/70 border border-slate-800/80 rounded-xl p-4 sm:p-5 backdrop-blur-md hidden sm:block">
+                <span class="text-xs font-medium text-slate-400">
+                    Persistência local
+                </span>
+
+                <div class="mt-2 flex items-baseline justify-between">
+                    <span class="text-2xl font-bold text-cyan-400 font-mono">
+                        IndexedDB
+                    </span>
+
+                    <span class="text-xs text-slate-500 font-mono">
+                        sincronizado
+                    </span>
                 </div>
             </div>
         </div>
 
-        <!-- FORMULÁRIO DE HÁBITO -->
-        <div class="bg-[#0f0f23]/60 border border-slate-800/70 rounded-2xl p-5 sm:p-6 backdrop-blur-md">
-            <h2 class="text-sm font-semibold text-slate-200 mb-4 flex items-center gap-2">
-                <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                Cadastrar novo h&aacute;bito para acompanhamento di&aacute;rio
-            </h2>
-            <form onsubmit="handleCreateHabit(event)" class="grid grid-cols-1 sm:grid-cols-12 gap-3">
+        <!-- FORMULÁRIO PARA NOVO HÁBITO -->
+        <div class="bg-[#0f0f23]/60 border border-slate-800/70 rounded-2xl p-4 sm:p-6 backdrop-blur-md">
+            <form
+                onsubmit="handleCreateHabit(event)"
+                class="grid grid-cols-1 sm:grid-cols-12 gap-3"
+            >
                 <div class="sm:col-span-6">
-                    <input type="text" id="habit-title-input" required placeholder="Ex.: Beber 2L de água, ler 10 páginas, caminhar 15 min" 
-                        class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500 transition-colors">
+                    <input
+                        type="text"
+                        id="habit-title-input"
+                        required
+                        placeholder="Ex.: Beber 2L de água..."
+                        class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3.5 py-3 sm:py-2 text-xs sm:text-sm text-slate-200 focus:outline-none focus:border-emerald-500 transition-colors"
+                    >
                 </div>
+
                 <div class="sm:col-span-3">
-                    <select id="habit-category-input" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-slate-300 focus:outline-none focus:border-emerald-500 transition-colors cursor-pointer">
-                        <option value="Saúde">Sa&uacute;de e bem-estar</option>
+                    <select
+                        id="habit-category-input"
+                        class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-3 sm:py-2 text-xs sm:text-sm text-slate-300 focus:outline-none focus:border-emerald-500 transition-colors"
+                    >
+                        <option value="Saúde">Saúde e bem-estar</option>
                         <option value="Estudo">Estudos e leitura</option>
                         <option value="Produtividade">Produtividade</option>
-                        <option value="Finanças">Finan&ccedil;as pessoais</option>
+                        <option value="Finanças">Finanças pessoais</option>
                     </select>
                 </div>
+
                 <div class="sm:col-span-3">
-                    <button type="submit" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs rounded-xl transition-all shadow-[0_0_15px_rgba(16,185,129,0.3)] cursor-pointer">
-                        Adicionar rotina
+                    <button
+                        type="submit"
+                        class="w-full py-3 sm:py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs sm:text-sm rounded-lg transition-all shadow-[0_0_15px_rgba(16,185,129,0.3)]"
+                    >
+                        Adicionar
                     </button>
                 </div>
             </form>
         </div>
 
-        <!-- LISTA DE ROTINAS -->
+        <!-- LISTA DE HÁBITOS -->
         <div class="space-y-4">
             <div class="flex items-center justify-between">
                 <div>
-                    <h2 class="text-base sm:text-lg font-bold text-white">Minhas rotinas ativas</h2>
-                    <p class="text-xs text-slate-400 font-light mt-0.5">Toque no card para registrar o check-in de hoje ou gerencie a tarefa individualmente.</p>
+                    <h2 class="text-base sm:text-lg font-bold text-white">
+                        Minhas rotinas ativas
+                    </h2>
                 </div>
-                <span class="text-xs font-mono text-slate-500" id="total-habits-counter">0 h&aacute;bitos</span>
+
+                <span
+                    class="text-[10px] sm:text-xs font-mono text-slate-500"
+                    id="total-habits-counter"
+                >
+                    0 hábitos
+                </span>
             </div>
 
-            <div id="habits-container" class="grid grid-cols-1 gap-4">
-                <!-- Cards renderizados dinamicamente -->
-            </div>
+            <div
+                id="habits-container"
+                class="grid grid-cols-1 gap-3 sm:gap-4"
+            ></div>
         </div>
 
     </main>
 
     <script>
         const db = new Dexie("StreakLoopDB");
+
         db.version(1).stores({
             habits: "++id, title, category, createdAt",
             history: "++id, habitId, dateStr"
         });
 
+        // Sanitiza texto inserido pelo usuário antes de exibi-lo no HTML.
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, tag => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                "'": "&#39;",
+                '"': "&quot;"
+            }[tag]));
+        }
+
         function playCheckinSound() {
             try {
-                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const audioCtx = new (
+                    window.AudioContext ||
+                    window.webkitAudioContext
+                )();
+
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
 
                 osc.type = "sine";
-                osc.frequency.setValueAtTime(587.33, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15);
 
-                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+                osc.frequency.setValueAtTime(
+                    587.33,
+                    audioCtx.currentTime
+                );
+
+                osc.frequency.exponentialRampToValueAtTime(
+                    880,
+                    audioCtx.currentTime + 0.15
+                );
+
+                gain.gain.setValueAtTime(
+                    0.2,
+                    audioCtx.currentTime
+                );
+
+                gain.gain.exponentialRampToValueAtTime(
+                    0.01,
+                    audioCtx.currentTime + 0.2
+                );
 
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
 
                 osc.start();
                 osc.stop(audioCtx.currentTime + 0.2);
-            } catch (e) {}
+            } catch (e) {
+                console.warn("Não foi possível reproduzir o som.", e);
+            }
         }
 
         function getTodayDateString() {
             const d = new Date();
-            const year = d.getFullYear();
-            const month = String(d.getMonth() + 1).padStart(2, '0');
-            const day = String(d.getDate()).padStart(2, '0');
-            return `${year}-${month}-${day}`;
+
+            return `${d.getFullYear()}-${String(
+                d.getMonth() + 1
+            ).padStart(2, "0")}-${String(
+                d.getDate()
+            ).padStart(2, "0")}`;
         }
 
         function calculateStreak(historyDates) {
-            if (!historyDates || historyDates.length === 0) return 0;
-            const dateSet = new Set(historyDates);
+            if (!historyDates || historyDates.length === 0) {
+                return 0;
+            }
 
+            const dateSet = new Set(historyDates);
             let streak = 0;
             let checkDate = new Date();
 
             const todayStr = getTodayDateString();
+
             if (!dateSet.has(todayStr)) {
                 checkDate.setDate(checkDate.getDate() - 1);
             }
 
             while (true) {
-                const y = checkDate.getFullYear();
-                const m = String(checkDate.getMonth() + 1).padStart(2, '0');
-                const d = String(checkDate.getDate()).padStart(2, '0');
-                const dateKey = `${y}-${m}-${d}`;
+                const dateKey = `${checkDate.getFullYear()}-${String(
+                    checkDate.getMonth() + 1
+                ).padStart(2, "0")}-${String(
+                    checkDate.getDate()
+                ).padStart(2, "0")}`;
 
                 if (dateSet.has(dateKey)) {
                     streak++;
@@ -201,110 +327,209 @@
             return streak;
         }
 
-        function getLast14DaysKeys() {
-            const keys = [];
-            for (let i = 13; i >= 0; i--) {
-                const pastDate = new Date();
-                pastDate.setDate(pastDate.getDate() - i);
-                const y = pastDate.getFullYear();
-                const m = String(pastDate.getMonth() + 1).padStart(2, '0');
-                const d = String(pastDate.getDate()).padStart(2, '0');
-                keys.push(`${y}-${m}-${d}`);
-            }
-            return keys;
-        }
-
         function renderHeatmapGrid(historyDates) {
             const dateSet = new Set(historyDates);
-            let html = '<div class="flex items-center gap-1.5 overflow-x-auto py-1">';
+
+            let html = `
+                <div class="flex items-center gap-1 sm:gap-1.5 overflow-x-auto py-1">
+            `;
 
             for (let i = 13; i >= 0; i--) {
-                const pastDate = new Date();
-                pastDate.setDate(pastDate.getDate() - i);
+                const p = new Date();
+                p.setDate(p.getDate() - i);
 
-                const y = pastDate.getFullYear();
-                const m = String(pastDate.getMonth() + 1).padStart(2, '0');
-                const d = String(pastDate.getDate()).padStart(2, '0');
-                const dateKey = `${y}-${m}-${d}`;
+                const dateKey = `${p.getFullYear()}-${String(
+                    p.getMonth() + 1
+                ).padStart(2, "0")}-${String(
+                    p.getDate()
+                ).padStart(2, "0")}`;
 
                 const isDone = dateSet.has(dateKey);
                 const isToday = i === 0;
 
-                const bgClass = isDone 
-                    ? 'bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.5)]' 
-                    : 'bg-slate-900 border border-slate-800';
+                const bgClass = isDone
+                    ? "bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.5)]"
+                    : "bg-slate-900 border border-slate-800";
 
-                const borderPulse = isToday ? 'ring-1 ring-emerald-400/50' : '';
+                const borderPulse = isToday
+                    ? "ring-1 ring-emerald-400/50"
+                    : "";
 
                 html += `
                     <div class="flex flex-col items-center gap-1">
-                        <div class="w-3 h-3 rounded-sm ${bgClass} ${borderPulse}" title="${dateKey}: ${isDone ? 'Concluído' : 'Pendente'}"></div>
+                        <div
+                            class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-sm ${bgClass} ${borderPulse}"
+                            title="${dateKey}"
+                        ></div>
                     </div>
                 `;
             }
 
-            html += '</div>';
+            html += "</div>";
+
             return html;
         }
 
         async function loadAndRenderHabits() {
             const habits = await db.habits.toArray();
             const todayStr = getTodayDateString();
-            const container = document.getElementById("habits-container");
+
+            const container = document.getElementById(
+                "habits-container"
+            );
+
             container.innerHTML = "";
 
             let completedTodayCount = 0;
             let maxOverallStreak = 0;
 
-            if (habits.length === 0) {
-                container.innerHTML = `
-                    <div class="bg-[#0f0f23]/40 border border-slate-800/80 rounded-2xl p-10 text-center">
-                        <p class="text-slate-400 font-light text-sm">Nenhum h&aacute;bito cadastrado ainda.</p>
-                        <p class="text-slate-600 text-xs mt-1">Crie sua primeira rotina acima para acompanhar sua consist&ecirc;ncia di&aacute;ria.</p>
-                    </div>
-                `;
-            }
-
             for (const habit of habits) {
-                const historyEntries = await db.history.where("habitId").equals(habit.id).toArray();
-                const historyDates = historyEntries.map(e => e.dateStr);
+                const historyEntries = await db.history
+                    .where("habitId")
+                    .equals(habit.id)
+                    .toArray();
+
+                const historyDates = historyEntries.map(
+                    entry => entry.dateStr
+                );
+
                 const isDoneToday = historyDates.includes(todayStr);
                 const streak = calculateStreak(historyDates);
 
-                if (isDoneToday) completedTodayCount++;
-                if (streak > maxOverallStreak) maxOverallStreak = streak;
+                if (isDoneToday) {
+                    completedTodayCount++;
+                }
+
+                if (streak > maxOverallStreak) {
+                    maxOverallStreak = streak;
+                }
 
                 const card = document.createElement("div");
-                card.className = `bg-[#0f0f23]/80 border ${isDoneToday ? 'border-emerald-500/50 bg-[#0c1f1f]/40' : 'border-slate-800/80'} rounded-2xl p-5 backdrop-blur-md transition-all duration-300 flex flex-col md:flex-row md:items-center justify-between gap-4`;
+
+                card.className = `
+                    bg-[#0f0f23]/80
+                    border
+                    ${
+                        isDoneToday
+                            ? "border-emerald-500/50 bg-[#0c1f1f]/40"
+                            : "border-slate-800/80"
+                    }
+                    rounded-2xl
+                    p-4
+                    sm:p-5
+                    backdrop-blur-md
+                    transition-all
+                    duration-300
+                    flex
+                    flex-col
+                    md:flex-row
+                    md:items-center
+                    justify-between
+                    gap-4
+                `;
 
                 card.innerHTML = `
-                    <div class="flex items-start gap-4">
-                        <button onclick="toggleHabit(${habit.id})" class="mt-0.5 shrink-0 w-8 h-8 rounded-xl flex items-center justify-center transition-all cursor-pointer ${isDoneToday ? 'bg-emerald-500 text-slate-950 font-bold shadow-[0_0_12px_rgba(16,185,129,0.5)]' : 'bg-slate-900 border border-slate-700 text-transparent hover:border-emerald-400'}">
-                            <svg class="w-4 h-4 ${isDoneToday ? 'stroke-current' : 'opacity-0'}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                    <div class="flex items-start gap-3 sm:gap-4 w-full md:w-auto">
+                        <button
+                            type="button"
+                            onclick="toggleHabit(${habit.id})"
+                            aria-label="${
+                                isDoneToday
+                                    ? "Desmarcar hábito"
+                                    : "Marcar hábito como concluído"
+                            }"
+                            class="
+                                mt-0.5
+                                shrink-0
+                                w-8
+                                h-8
+                                rounded-xl
+                                flex
+                                items-center
+                                justify-center
+                                transition-all
+                                ${
+                                    isDoneToday
+                                        ? "bg-emerald-500 text-slate-950 font-bold shadow-[0_0_12px_rgba(16,185,129,0.5)]"
+                                        : "bg-slate-900 border border-slate-700 text-transparent hover:border-emerald-400"
+                                }
+                            "
+                        >
+                            <svg
+                                class="w-4 h-4 ${
+                                    isDoneToday
+                                        ? "stroke-current"
+                                        : "opacity-0"
+                                }"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="3"
+                                    d="M5 13l4 4L19 7"
+                                ></path>
+                            </svg>
                         </button>
-                        <div>
-                            <div class="flex items-center gap-2 mb-1">
-                                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800">${habit.category}</span>
-                                <span class="text-xs font-mono font-semibold ${streak > 0 ? 'text-amber-400' : 'text-slate-500'}">&bull; ${streak} ${streak === 1 ? 'dia' : 'dias'} em sequ&ecirc;ncia</span>
+
+                        <div class="w-[calc(100%-3rem)]">
+                            <div class="flex flex-wrap items-center gap-2 mb-1">
+                                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800">
+                                    ${escapeHTML(habit.category)}
+                                </span>
+
+                                <span class="text-[10px] sm:text-xs font-mono font-semibold ${
+                                    streak > 0
+                                        ? "text-amber-400"
+                                        : "text-slate-500"
+                                }">
+                                    &bull; ${streak} dias
+                                </span>
                             </div>
-                            <h3 class="text-base font-bold ${isDoneToday ? 'text-emerald-300 line-through opacity-80' : 'text-white'} transition-colors">${habit.title}</h3>
+
+                            <h3 class="text-sm sm:text-base font-bold break-words pr-2 ${
+                                isDoneToday
+                                    ? "text-emerald-300 line-through opacity-80"
+                                    : "text-white"
+                            } transition-colors">
+                                ${escapeHTML(habit.title)}
+                            </h3>
                         </div>
                     </div>
 
-                    <div class="flex items-center justify-between md:justify-end gap-4 sm:gap-6 border-t md:border-t-0 border-slate-800/60 pt-3 md:pt-0">
+                    <div class="flex items-center justify-between md:justify-end gap-4 border-t md:border-t-0 border-slate-800/60 pt-3 md:pt-0 w-full md:w-auto">
                         <div class="flex flex-col items-start md:items-end">
-                            <span class="text-[10px] font-mono text-slate-500 mb-1">&Uacute;ltimos 14 dias</span>
+                            <span class="text-[10px] font-mono text-slate-500 mb-1">
+                                Últimos 14 dias
+                            </span>
+
                             ${renderHeatmapGrid(historyDates)}
                         </div>
 
-                        <div class="flex items-center gap-1.5">
-                            <button onclick="resetHabitStreak(${habit.id})" class="text-[11px] font-mono px-2.5 py-1.5 bg-slate-900 hover:bg-amber-950/40 border border-slate-800 hover:border-amber-500/50 text-slate-400 hover:text-amber-300 rounded-lg transition-all cursor-pointer" title="Zerar dias em sequncia desta tarefa">
-                                Zerar dias
-                            </button>
-                            <button onclick="deleteHabit(${habit.id})" class="text-slate-600 hover:text-rose-400 p-1.5 transition-colors cursor-pointer" title="Excluir hábito">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                            </button>
-                        </div>
+                        <button
+                            type="button"
+                            onclick="deleteHabit(${habit.id})"
+                            aria-label="Excluir hábito"
+                            class="text-slate-600 hover:text-rose-400 p-2 sm:p-1.5 transition-colors bg-slate-900/50 md:bg-transparent rounded-lg md:rounded-none"
+                        >
+                            <svg
+                                class="w-4 h-4"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                ></path>
+                            </svg>
+                        </button>
                     </div>
                 `;
 
@@ -312,115 +537,118 @@
             }
 
             const total = habits.length;
-            const percentage = total > 0 ? Math.round((completedTodayCount / total) * 100) : 0;
 
-            document.getElementById("stat-progress").textContent = `${percentage}%`;
-            document.getElementById("stat-completed-count").textContent = `${completedTodayCount}/${total} concluídos`;
-            document.getElementById("stat-progress-bar").style.width = `${percentage}%`;
-            document.getElementById("stat-max-streak").textContent = `${maxOverallStreak} ${maxOverallStreak === 1 ? 'dia' : 'dias'}`;
-            document.getElementById("total-habits-counter").textContent = `${total} ${total === 1 ? 'hábito' : 'hábitos'}`;
+            const percentage = total > 0
+                ? Math.round((completedTodayCount / total) * 100)
+                : 0;
+
+            document.getElementById(
+                "stat-progress"
+            ).textContent = `${percentage}%`;
+
+            document.getElementById(
+                "stat-completed-count"
+            ).textContent = `${completedTodayCount}/${total} concluídos`;
+
+            document.getElementById(
+                "stat-progress-bar"
+            ).style.width = `${percentage}%`;
+
+            document.getElementById(
+                "stat-max-streak"
+            ).textContent = `${maxOverallStreak} dias`;
+
+            document.getElementById(
+                "total-habits-counter"
+            ).textContent = `${total} ${
+                total === 1 ? "hábito" : "hábitos"
+            }`;
         }
 
-        async function handleCreateHabit(e) {
-            e.preventDefault();
-            const titleInput = document.getElementById("habit-title-input");
-            const categoryInput = document.getElementById("habit-category-input");
+        async function handleCreateHabit(event) {
+            event.preventDefault();
+
+            const titleInput = document.getElementById(
+                "habit-title-input"
+            );
 
             const title = titleInput.value.trim();
-            const category = categoryInput.value;
-            if (!title) return;
+
+            if (!title) {
+                return;
+            }
 
             await db.habits.add({
-                title: title,
-                category: category,
+                title,
+                category: document.getElementById(
+                    "habit-category-input"
+                ).value,
                 createdAt: new Date().toISOString()
             });
 
             titleInput.value = "";
+
             await loadAndRenderHabits();
         }
 
         async function toggleHabit(habitId) {
             const todayStr = getTodayDateString();
-            const existing = await db.history.where({ habitId: habitId, dateStr: todayStr }).first();
+
+            const existing = await db.history
+                .where({
+                    habitId,
+                    dateStr: todayStr
+                })
+                .first();
 
             if (existing) {
                 await db.history.delete(existing.id);
             } else {
                 await db.history.add({
-                    habitId: habitId,
+                    habitId,
                     dateStr: todayStr
                 });
+
                 playCheckinSound();
             }
 
             await loadAndRenderHabits();
         }
 
-        async function resetHabitStreak(habitId) {
-            if (!confirm("Deseja realmente zerar o contador de sequncia deste hábito? O histórico acumulado desta rotina será limpo.")) return;
-            await db.history.where("habitId").equals(habitId).delete();
-            await loadAndRenderHabits();
-        }
-
         async function deleteHabit(habitId) {
-            if (!confirm("Deseja realmente remover este hábito e seu histórico?")) return;
+            const shouldDelete = confirm(
+                "Remover este hábito e todo o histórico?"
+            );
+
+            if (!shouldDelete) {
+                return;
+            }
+
             await db.habits.delete(habitId);
-            await db.history.where("habitId").equals(habitId).delete();
+
+            await db.history
+                .where("habitId")
+                .equals(habitId)
+                .delete();
+
             await loadAndRenderHabits();
-        }
-
-        async function exportToCSV() {
-            const habits = await db.habits.toArray();
-            const allHistory = await db.history.toArray();
-            const last14Keys = getLast14DaysKeys();
-
-            let csvContent = "data:text/csv;charset=utf-8,ID,Rotina_Habito,Categoria,Sequencia_Atual_Dias,Total_Checkins,Consistencia_14d_Pct,Data_Cadastro\n";
-
-            for (const h of habits) {
-                const historyEntries = allHistory.filter(e => e.habitId === h.id);
-                const historyDates = historyEntries.map(e => e.dateStr);
-                const streak = calculateStreak(historyDates);
-                const totalCheckins = historyDates.length;
-                const doneInLast14 = last14Keys.filter(k => historyDates.includes(k)).length;
-                const consistencyRate = Math.round((doneInLast14 / 14) * 100);
-                const createdAtFormatted = h.createdAt ? new Date(h.createdAt).toLocaleDateString("pt-BR") : "N/D";
-
-                csvContent += `${h.id},"${h.title.replace(/"/g, '""')}","${h.category}",${streak},${totalCheckins},${consistencyRate}%,${createdAtFormatted}\n`;
-            }
-
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", `desempenho_rotinas_${new Date().toISOString().slice(0, 10)}.csv`);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-
-        async function seedInitialDataIfEmpty() {
-            const count = await db.habits.count();
-            if (count === 0) {
-                const id1 = await db.habits.add({ title: "Beber 2 litros de água", category: "Saúde", createdAt: new Date().toISOString() });
-                const id2 = await db.habits.add({ title: "Ler 10 páginas de livro técnico", category: "Estudo", createdAt: new Date().toISOString() });
-                const id3 = await db.habits.add({ title: "Revisar tarefas prioritárias do dia", category: "Produtividade", createdAt: new Date().toISOString() });
-
-                const yesterday = new Date();
-                yesterday.setDate(yesterday.getDate() - 1);
-                const format = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-
-                await db.history.add({ habitId: id1, dateStr: format(yesterday) });
-                await db.history.add({ habitId: id2, dateStr: format(yesterday) });
-            }
         }
 
         window.addEventListener("DOMContentLoaded", async () => {
-            const d = new Date();
-            const dateBadge = document.getElementById("current-date-badge");
-            if (dateBadge) {
-                dateBadge.textContent = d.toLocaleDateString("pt-BR", { weekday: 'short', day: '2-digit', month: 'long', year: 'numeric' });
-            }
-            await seedInitialDataIfEmpty();
+            const currentDate = new Date();
+
+            document.getElementById(
+                "current-date-badge"
+            ).textContent = currentDate.toLocaleDateString(
+                "pt-BR",
+                {
+                    weekday: "short",
+                    day: "2-digit",
+                    month: "long",
+                    year: "numeric"
+                }
+            );
+
             await loadAndRenderHabits();
         });
     </script>
