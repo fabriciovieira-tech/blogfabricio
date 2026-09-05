@@ -1,208 +1,198 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com https://fonts.googleapis.com https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com;">
-    <title>Horlogerie minimaliste | Experi&ecirc;ncia ultra HD</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Inter', sans-serif; background-color: #050508; }
-        .serif-title { font-family: 'Cormorant Garamond', serif; }
-        .lens-cursor { box-shadow: 0 0 0 2px rgba(212, 163, 115, 0.6), 0 25px 50px -12px rgba(0, 0, 0, 0.9); touch-action: none; }
-        .custom-scroll::-webkit-scrollbar { width: 4px; }
-        .custom-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com https://fonts.googleapis.com https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com;">
+  <title>Horlogerie minimaliste | Experiência ultra HD</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #050508; scroll-behavior: smooth; }
+    .serif-title { font-family: 'Cormorant Garamond', serif; }
+    .lens-cursor { box-shadow: 0 0 0 2px rgba(212, 163, 115, 0.6), 0 25px 50px -12px rgba(0, 0, 0, 0.9); touch-action: none; }
+    .custom-scroll::-webkit-scrollbar { width: 4px; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+  </style>
 </head>
-<body class="text-slate-100 min-h-screen selection:bg-amber-500/20 antialiased overflow-x-hidden">
+<body class="text-slate-100 min-h-screen selection:bg-amber-500/20 antialiased overflow-x-hidden pb-24">
 
-    <div id="app" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-6 sm:space-y-8">
-        
-        <header class="flex flex-wrap justify-between items-center border-b border-slate-900 pb-5 gap-4">
-            <div class="w-full sm:w-auto break-words">
-                <span class="text-[10px] sm:text-xs font-semibold tracking-[0.3em] text-amber-400 uppercase block mb-1">
-                    Atelier d'horlogerie
-                </span>
-                <h1 class="serif-title text-3xl sm:text-4xl lg:text-5xl font-light text-slate-100 tracking-wide leading-tight">
-                    L'&Eacute;ternit&eacute; chronographe
-                </h1>
-            </div>
-            
-            <button @click="isCartOpen = true" class="relative p-3 sm:px-4 sm:py-2.5 rounded-xl bg-[#0e0e1a] border border-slate-800 hover:border-amber-500/50 transition-all flex items-center gap-2.5 cursor-pointer mt-2 sm:mt-0">
-                <div class="relative">
-                    <svg class="w-5 h-5 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
-                    <span v-if="carrinho.length > 0" class="absolute -top-2 -right-2 w-4 h-4 rounded-full bg-amber-500 text-slate-950 font-bold text-[10px] flex items-center justify-center font-mono">{{ totalItensCarrinho }}</span>
-                </div>
-                <span class="inline text-xs font-medium text-slate-300">Sacola</span>
-            </button>
-        </header>
-
-        <main class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-            <!-- Coluna da Lupa DinÃ¢mica -->
-            <div class="lg:col-span-7 flex flex-col items-center">
-                <div class="w-full max-w-[540px] flex items-center justify-between text-xs text-slate-400 mb-2.5 font-mono px-1">
-                    <span class="flex items-center gap-1.5 text-[11px]"><span class="w-1.5 h-1.5 rounded-full" :class="isLensVisible ? 'bg-amber-400' : 'bg-slate-600'"></span>{{ isLensVisible ? 'Arraste a lupa livremente' : 'Lupa desativada' }}</span>
-                    <button @click="toggleLens" class="text-[11px] px-2.5 py-1 rounded bg-slate-900 border border-slate-800 hover:text-white transition-colors cursor-pointer">{{ isLensVisible ? 'Ocultar lupa' : 'Exibir lupa' }}</button>
-                </div>
-
-                <div class="relative w-full max-w-[540px] aspect-square rounded-2xl overflow-hidden bg-[#0a0a12] border border-slate-800/80 shadow-2xl flex items-center justify-center select-none" ref="containerRef" @dblclick="toggleLens" @touchstart="handleTouchStart">
-                    <img :src="acabamentoAtivo.imagem" :alt="acabamentoAtivo.nome" class="w-full h-full object-cover pointer-events-none transition-opacity duration-300" draggable="false" />
-                    <div v-show="isLensVisible" class="lens-cursor absolute w-36 h-36 sm:w-44 sm:h-44 rounded-full overflow-hidden bg-no-repeat z-30 cursor-grab active:cursor-grabbing" :style="lensStyle" @mousedown="startDrag" @touchstart.stop="startTouchDrag"></div>
-                </div>
-
-                <div class="flex gap-3 mt-6">
-                    <button v-for="(item, index) in acabamentos" :key="index" @click="selecionarAcabamento(item)" :class="acabamentoAtivo.id === item.id ? 'border-amber-400 ring-2 ring-amber-400/20' : 'border-slate-800 hover:opacity-100'" class="w-16 h-16 rounded-xl overflow-hidden border bg-[#0a0a12] p-1 cursor-pointer">
-                        <img :src="item.imagem" class="w-full h-full object-cover rounded-lg" draggable="false" />
-                    </button>
-                </div>
-            </div>
-
-            <!-- Painel lateral (Infos e BotÃµes de Compra) -->
-            <div class="lg:col-span-5 space-y-6">
-                <div>
-                    <h2 class="serif-title text-2xl sm:text-3xl lg:text-4xl text-white font-normal mb-2 break-words">{{ acabamentoAtivo.nome }}</h2>
-                    <p class="text-sm text-slate-400 font-light leading-relaxed">Calibre mec&acirc;nico de alta precis&atilde;o com reserva de marcha de 72 horas. Caixa esculpida manualmente com cristal de safira duplo antirreflexo.</p>
-                </div>
-
-                <div class="p-4 rounded-2xl bg-[#0b0b16] border border-slate-800/80 flex items-baseline justify-between">
-                    <div>
-                        <span class="text-[11px] text-slate-500 block uppercase font-mono">Valor de aquisi&ccedil;&atilde;o</span>
-                        <span class="text-2xl sm:text-3xl font-bold font-mono text-amber-400">R$ {{ formatMoney(acabamentoAtivo.preco) }}</span>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 gap-2 text-xs">
-                    <button v-for="item in acabamentos" :key="item.id" @click="selecionarAcabamento(item)" :class="acabamentoAtivo.id === item.id ? 'bg-amber-950/30 border-amber-500/50 text-amber-300' : 'bg-[#0a0a12] border-slate-800 text-slate-400 hover:border-slate-700'" class="p-3 rounded-xl border text-left font-medium transition-all cursor-pointer flex items-center justify-between">
-                        <span>{{ item.material }}</span><span class="w-2.5 h-2.5 rounded-full" :style="{ backgroundColor: item.corHex }"></span>
-                    </button>
-                </div>
-
-                <div class="space-y-3 pt-4 border-t border-slate-900">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <button @click="adicionarAoCarrinho(acabamentoAtivo)" class="w-full py-3.5 px-4 rounded-xl border border-amber-500/40 hover:border-amber-400 bg-amber-950/20 text-amber-300 font-semibold text-xs uppercase tracking-wider cursor-pointer">Adicionar &agrave; sacola</button>
-                        <button @click="comprarAgora(acabamentoAtivo)" class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 text-slate-950 font-bold text-xs uppercase tracking-wider cursor-pointer">Comprar agora</button>
-                    </div>
-                    <label class="flex items-center gap-2.5 p-3 rounded-xl bg-[#0a0a12] border border-slate-800/80 cursor-pointer text-xs text-slate-300">
-                        <input type="checkbox" v-model="incluirCertificado" class="rounded border-slate-700 text-amber-500 focus:ring-amber-400 bg-slate-900">
-                        <span>Incluir certificado criptogr&aacute;fico digital</span>
-                    </label>
-                </div>
-            </div>
-        </main>
-
-        <!-- Drawer do Carrinho -->
-        <div v-if="isCartOpen" class="fixed inset-0 z-50 flex justify-end bg-black/70 backdrop-blur-xs">
-            <div class="w-full max-w-md bg-[#090914] border-l border-slate-800 h-full p-6 flex flex-col justify-between shadow-2xl">
-                <div>
-                    <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-4">
-                        <h3 class="serif-title text-2xl text-white">Sua sacola</h3>
-                        <button @click="isCartOpen = false" class="text-slate-400 hover:text-white p-1 text-xl cursor-pointer">&times;</button>
-                    </div>
-                    <div v-if="carrinho.length === 0" class="text-center py-16 text-slate-500 text-sm font-light">Sacola vazia no momento.</div>
-                    <div v-else class="space-y-4 max-h-[55vh] overflow-y-auto custom-scroll pr-1">
-                        <div v-for="(item, index) in carrinho" :key="index" class="flex gap-3.5 p-3 rounded-xl bg-[#05050c] border border-slate-800/80 items-center justify-between">
-                            <img :src="item.imagem" class="w-14 h-14 rounded-lg object-cover border border-slate-800" />
-                            <div class="flex-1 text-xs break-words">
-                                <h4 class="font-medium text-white mb-0.5">{{ item.nome }}</h4>
-                                <span class="text-slate-400 font-mono block">R$ {{ formatMoney(item.preco) }}</span>
-                            </div>
-                            <button @click="removerDoCarrinho(index)" class="text-slate-500 hover:text-rose-400 p-1 text-sm font-bold cursor-pointer">&times;</button>
-                        </div>
-                    </div>
-                </div>
-                <div v-if="carrinho.length > 0" class="border-t border-slate-800 pt-4 space-y-3">
-                    <div class="flex justify-between items-baseline font-mono"><span class="text-xs text-slate-400">Total:</span><span class="text-xl font-bold text-amber-400">R$ {{ formatMoney(valorTotalCarrinho) }}</span></div>
-                    <button @click="finalizarCompra" class="w-full py-3.5 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold text-xs uppercase tracking-wider rounded-xl cursor-pointer">Finalizar compra</button>
-                </div>
-            </div>
+  <div id="app" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-6 sm:space-y-8">
+    <header class="flex flex-wrap justify-between items-center border-b border-slate-900 pb-5 gap-4">
+      <div class="w-full sm:w-auto break-words">
+        <span class="text-[10px] sm:text-xs font-semibold tracking-[0.3em] text-amber-400 uppercase block mb-1">Atelier d'horlogerie</span>
+        <h1 class="serif-title text-3xl sm:text-4xl lg:text-5xl font-light text-slate-100 tracking-wide leading-tight">L'&Eacute;ternit&eacute; chronographe</h1>
+      </div>
+      <button @click="isCartOpen = true" class="relative p-3 sm:px-4 sm:py-2.5 rounded-xl bg-[#0e0e1a] border border-slate-800 hover:border-amber-500/50 transition-all flex items-center gap-2.5 cursor-pointer mt-2 sm:mt-0">
+        <div class="relative">
+          <svg class="w-5 h-5 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+          <span v-if="carrinho.length > 0" class="absolute -top-2 -right-2 w-4 h-4 rounded-full bg-amber-500 text-slate-950 font-bold text-[10px] flex items-center justify-center font-mono">{{ totalItensCarrinho }}</span>
         </div>
+        <span class="inline text-xs font-medium text-slate-300">Sacola</span>
+      </button>
+    </header>
 
-        <div v-if="mensagemSucesso" class="fixed bottom-6 right-6 z-50 bg-emerald-950/90 border border-emerald-500/50 text-emerald-200 px-4 py-3 rounded-xl text-xs font-medium flex items-center gap-2 backdrop-blur-md">
-            <span>{{ mensagemSucesso }}</span>
+    <section class="bg-[#0b0b16]/70 border border-slate-800/80 p-5 sm:p-6 rounded-2xl backdrop-blur-sm relative overflow-hidden">
+      <div class="max-w-4xl space-y-2.5 sm:space-y-3">
+        <h2 class="text-xs sm:text-sm font-bold text-amber-400 uppercase tracking-wider flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          Sobre a aplica&ccedil;&atilde;o
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-light">
+          Simulador de experi&ecirc;ncia e-commerce luxo. Apresenta inspe&ccedil;&atilde;o interativa com lente de aumento em tempo real (cursor tracking) e altern&acirc;ncia de materiais sem gargalos de recarregamento na UI.
+        </p>
+        <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 pt-1">
+          <span class="text-[11px] sm:text-xs text-slate-400 font-medium mr-1">Tecnologias:</span>
+          <span class="text-[11px] sm:text-xs px-2 py-0.5 rounded-md bg-slate-900 border border-slate-800 text-amber-300 font-mono">Vue.js 3</span>
+          <span class="text-[11px] sm:text-xs px-2 py-0.5 rounded-md bg-slate-900 border border-slate-800 text-cyan-300 font-mono">TailwindCSS</span>
+          <span class="text-[11px] sm:text-xs px-2 py-0.5 rounded-md bg-slate-900 border border-slate-800 text-rose-300 font-mono">JS Math</span>
         </div>
+      </div>
+    </section>
+
+    <main class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+      <div class="lg:col-span-7 flex flex-col items-center">
+        <div class="w-full max-w-[540px] flex items-center justify-between text-xs text-slate-400 mb-2.5 font-mono px-1">
+          <span class="flex items-center gap-1.5 text-[11px]"><span class="w-1.5 h-1.5 rounded-full" :class="isLensVisible ? 'bg-amber-400' : 'bg-slate-600'"></span>{{ isLensVisible ? 'Arraste a lupa livremente' : 'Lupa desativada' }}</span>
+          <button @click="toggleLens" class="text-[11px] px-2.5 py-1 rounded bg-slate-900 border border-slate-800 hover:text-white transition-colors cursor-pointer">{{ isLensVisible ? 'Ocultar lupa' : 'Exibir lupa' }}</button>
+        </div>
+        <div class="relative w-full max-w-[540px] aspect-square rounded-2xl overflow-hidden bg-[#0a0a12] border border-slate-800/80 shadow-2xl flex items-center justify-center select-none" ref="containerRef" @dblclick="toggleLens" @touchstart="handleTouchStart">
+          <img :src="acabamentoAtivo.imagem" :alt="acabamentoAtivo.nome" class="w-full h-full object-cover pointer-events-none transition-opacity duration-300" draggable="false" />
+          <div v-show="isLensVisible" class="lens-cursor absolute w-36 h-36 sm:w-44 sm:h-44 rounded-full overflow-hidden bg-no-repeat z-30 cursor-grab active:cursor-grabbing" :style="lensStyle" @mousedown="startDrag" @touchstart.stop="startTouchDrag"></div>
+        </div>
+        <div class="flex gap-3 mt-6">
+          <button v-for="(item, index) in acabamentos" :key="index" @click="selecionarAcabamento(item)" :class="acabamentoAtivo.id === item.id ? 'border-amber-400 ring-2 ring-amber-400/20' : 'border-slate-800 hover:opacity-100'" class="w-16 h-16 rounded-xl overflow-hidden border bg-[#0a0a12] p-1 cursor-pointer">
+            <img :src="item.imagem" class="w-full h-full object-cover rounded-lg" draggable="false" />
+          </button>
+        </div>
+      </div>
+
+      <div class="lg:col-span-5 space-y-6">
+        <div>
+          <h2 class="serif-title text-2xl sm:text-3xl lg:text-4xl text-white font-normal mb-2 break-words">{{ acabamentoAtivo.nome }}</h2>
+          <p class="text-sm text-slate-400 font-light leading-relaxed">Calibre mec&acirc;nico de alta precis&atilde;o com reserva de marcha de 72 horas. Caixa esculpida manualmente com cristal de safira duplo antirreflexo.</p>
+        </div>
+        <div class="p-4 rounded-2xl bg-[#0b0b16] border border-slate-800/80 flex items-baseline justify-between">
+          <div>
+            <span class="text-[11px] text-slate-500 block uppercase font-mono">Valor de aquisi&ccedil;&atilde;o</span>
+            <span class="text-2xl sm:text-3xl font-bold font-mono text-amber-400">R$ {{ formatMoney(acabamentoAtivo.preco) }}</span>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 gap-2 text-xs">
+          <button v-for="item in acabamentos" :key="item.id" @click="selecionarAcabamento(item)" :class="acabamentoAtivo.id === item.id ? 'bg-amber-950/30 border-amber-500/50 text-amber-300' : 'bg-[#0a0a12] border-slate-800 text-slate-400 hover:border-slate-700'" class="p-3 rounded-xl border text-left font-medium transition-all cursor-pointer flex items-center justify-between">
+            <span>{{ item.material }}</span><span class="w-2.5 h-2.5 rounded-full" :style="{ backgroundColor: item.corHex }"></span>
+          </button>
+        </div>
+        <div class="space-y-3 pt-4 border-t border-slate-900">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <button @click="adicionarAoCarrinho(acabamentoAtivo)" class="w-full py-3.5 px-4 rounded-xl border border-amber-500/40 hover:border-amber-400 bg-amber-950/20 text-amber-300 font-semibold text-xs uppercase tracking-wider cursor-pointer">Adicionar &agrave; sacola</button>
+            <button @click="comprarAgora(acabamentoAtivo)" class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 text-slate-950 font-bold text-xs uppercase tracking-wider cursor-pointer">Comprar agora</button>
+          </div>
+          <label class="flex items-center gap-2.5 p-3 rounded-xl bg-[#0a0a12] border border-slate-800/80 cursor-pointer text-xs text-slate-300">
+            <input type="checkbox" v-model="incluirCertificado" class="rounded border-slate-700 text-amber-500 focus:ring-amber-400 bg-slate-900">
+            <span>Incluir certificado criptogr&aacute;fico digital</span>
+          </label>
+        </div>
+      </div>
+    </main>
+
+    <div v-if="isCartOpen" class="fixed inset-0 z-50 flex justify-end bg-black/70 backdrop-blur-xs">
+      <div class="w-full max-w-md bg-[#090914] border-l border-slate-800 h-full p-6 flex flex-col justify-between shadow-2xl">
+        <div>
+          <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-4">
+            <h3 class="serif-title text-2xl text-white">Sua sacola</h3>
+            <button @click="isCartOpen = false" class="text-slate-400 hover:text-white p-1 text-xl cursor-pointer">&times;</button>
+          </div>
+          <div v-if="carrinho.length === 0" class="text-center py-16 text-slate-500 text-sm font-light">Sacola vazia no momento.</div>
+          <div v-else class="space-y-4 max-h-[55vh] overflow-y-auto custom-scroll pr-1">
+            <div v-for="(item, index) in carrinho" :key="index" class="flex gap-3.5 p-3 rounded-xl bg-[#05050c] border border-slate-800/80 items-center justify-between">
+              <img :src="item.imagem" class="w-14 h-14 rounded-lg object-cover border border-slate-800" />
+              <div class="flex-1 text-xs break-words">
+                <h4 class="font-medium text-white mb-0.5">{{ item.nome }}</h4>
+                <span class="text-slate-400 font-mono block">R$ {{ formatMoney(item.preco) }}</span>
+              </div>
+              <button @click="removerDoCarrinho(index)" class="text-slate-500 hover:text-rose-400 p-1 text-sm font-bold cursor-pointer">&times;</button>
+            </div>
+          </div>
+        </div>
+        <div v-if="carrinho.length > 0" class="border-t border-slate-800 pt-4 space-y-3">
+          <div class="flex justify-between items-baseline font-mono"><span class="text-xs text-slate-400">Total:</span><span class="text-xl font-bold text-amber-400">R$ {{ formatMoney(valorTotalCarrinho) }}</span></div>
+          <button @click="finalizarCompra" class="w-full py-3.5 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold text-xs uppercase tracking-wider rounded-xl cursor-pointer">Finalizar compra</button>
+        </div>
+      </div>
     </div>
+    <div v-if="mensagemSucesso" class="fixed bottom-6 right-6 z-50 bg-emerald-950/90 border border-emerald-500/50 text-emerald-200 px-4 py-3 rounded-xl text-xs font-medium flex items-center gap-2 backdrop-blur-md">
+      <span>{{ mensagemSucesso }}</span>
+    </div>
+  </div>
 
-    <script>
-        const { createApp, ref, computed, onMounted, onUnmounted } = Vue;
+  <button onclick="window.scrollTo({ top: 0, behavior: 'smooth' })" class="fixed bottom-6 left-6 z-50 p-3.5 bg-amber-600/90 hover:bg-amber-500 text-slate-900 rounded-full shadow-[0_0_15px_rgba(245,158,11,0.4)] hover:shadow-[0_0_20px_rgba(245,158,11,0.7)] transition-all cursor-pointer backdrop-blur-md">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"></path></svg>
+  </button>
 
-        createApp({
-            setup() {
-                const containerRef = ref(null);
-                const isLensVisible = ref(true);
-                const isDragging = ref(false);
-                const incluirCertificado = ref(true);
-                const isCartOpen = ref(false);
-                const mensagemSucesso = ref('');
-                const carrinho = ref([]);
+  <script>
+    const { createApp, ref, computed, onMounted, onUnmounted } = Vue;
+    createApp({
+      setup() {
+        const containerRef = ref(null); const isLensVisible = ref(true); const isDragging = ref(false);
+        const incluirCertificado = ref(true); const isCartOpen = ref(false); const mensagemSucesso = ref('');
+        const carrinho = ref([]); const lensX = ref(270); const lensY = ref(270);
 
-                const lensX = ref(270); const lensY = ref(270);
+        const acabamentos = [
+          { id: 'rose-gold', nome: 'Ouro rosa 18K e couro alligator', material: 'Ouro rosa 18K', preco: 48500, corHex: '#d4a373', imagem: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1200&auto=format&fit=crop' },
+          { id: 'platinum-noir', nome: 'Tit\u00e2nio grau 5 e dial preto', material: 'Tit\u00e2nio escovado', preco: 52000, corHex: '#94a3b8', imagem: 'https://images.unsplash.com/photo-1524805444758-089113d48a6d?q=80&w=1200&auto=format&fit=crop' },
+          { id: 'steel-classic', nome: 'A\u00e7o cir\u00fargico e dial prata', material: 'A\u00e7o 904L', preco: 36800, corHex: '#cbd5e1', imagem: 'https://images.unsplash.com/photo-1542496658-e33a6d0d50f6?q=80&w=1200&auto=format&fit=crop' }
+        ];
 
-                const acabamentos = [
-                    { id: 'rose-gold', nome: 'Ouro rosa 18K e couro alligator', material: 'Ouro rosa 18K', preco: 48500, corHex: '#d4a373', imagem: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1200&auto=format&fit=crop' },
-                    { id: 'platinum-noir', nome: 'Tit\u00e2nio grau 5 e dial preto', material: 'Tit\u00e2nio escovado', preco: 52000, corHex: '#94a3b8', imagem: 'https://images.unsplash.com/photo-1524805444758-089113d48a6d?q=80&w=1200&auto=format&fit=crop' },
-                    { id: 'steel-classic', nome: 'A\u00e7o cir\u00fargico e dial prata', material: 'A\u00e7o 904L', preco: 36800, corHex: '#cbd5e1', imagem: 'https://images.unsplash.com/photo-1542496658-e33a6d0d50f6?q=80&w=1200&auto=format&fit=crop' }
-                ];
+        const acabamentoAtivo = ref(acabamentos[0]);
+        const selecionarAcabamento = (item) => { acabamentoAtivo.value = item; };
+        const toggleLens = () => { isLensVisible.value = !isLensVisible.value; };
+        const startDrag = (e) => { isDragging.value = true; window.addEventListener('mousemove', onDrag); window.addEventListener('mouseup', stopDrag); };
+        const onDrag = (e) => {
+          if (!isDragging.value || !containerRef.value) return;
+          const rect = containerRef.value.getBoundingClientRect();
+          lensX.value = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
+          lensY.value = Math.max(0, Math.min(rect.height, e.clientY - rect.top));
+        };
+        const stopDrag = () => { isDragging.value = false; window.removeEventListener('mousemove', onDrag); window.removeEventListener('mouseup', stopDrag); };
+        const startTouchDrag = (e) => { if (e.touches.length === 1) { isDragging.value = true; window.addEventListener('touchmove', onTouchDrag, { passive: false }); window.addEventListener('touchend', stopTouchDrag); } };
+        const onTouchDrag = (e) => {
+          if (!isDragging.value || !containerRef.value) return;
+          e.preventDefault(); const rect = containerRef.value.getBoundingClientRect();
+          lensX.value = Math.max(0, Math.min(rect.width, e.touches[0].clientX - rect.left));
+          lensY.value = Math.max(0, Math.min(rect.height, e.touches[0].clientY - rect.top));
+        };
+        const stopTouchDrag = () => { isDragging.value = false; window.removeEventListener('touchmove', onTouchDrag); window.removeEventListener('touchend', stopTouchDrag); };
+        const handleTouchStart = (e) => { toggleLens(); e.preventDefault(); };
 
-                const acabamentoAtivo = ref(acabamentos[0]);
+        const lensStyle = computed(() => {
+          if (!containerRef.value) return {};
+          const rect = containerRef.value.getBoundingClientRect();
+          const width = rect.width || 540; const height = rect.height || 540;
+          return {
+            left: `${lensX.value}px`, top: `${lensY.value}px`, transform: 'translate(-50%, -50%)',
+            backgroundImage: `url('${acabamentoAtivo.value.imagem}')`, backgroundSize: `${width * 2.8}px ${height * 2.8}px`,
+            backgroundPosition: `${(lensX.value / width) * 100}% ${(lensY.value / height) * 100}%`
+          };
+        });
 
-                const selecionarAcabamento = (item) => { acabamentoAtivo.value = item; };
-                const toggleLens = () => { isLensVisible.value = !isLensVisible.value; };
+        const formatMoney = (val) => Number(val || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+        const totalItensCarrinho = computed(() => carrinho.value.length);
+        const valorTotalCarrinho = computed(() => carrinho.value.reduce((acc, item) => acc + item.preco, 0));
+        const exibirNotificacao = (texto) => { mensagemSucesso.value = texto; setTimeout(() => { mensagemSucesso.value = ''; }, 3000); };
+        const adicionarAoCarrinho = (item) => { carrinho.value.push({ ...item, comCertificado: incluirCertificado.value }); exibirNotificacao(`Item adicionado à sacola.`); };
+        const comprarAgora = (item) => { adicionarAoCarrinho(item); isCartOpen.value = true; };
+        const removerDoCarrinho = (index) => { carrinho.value.splice(index, 1); };
+        const finalizarCompra = () => { exibirNotificacao('Pedido processado com sucesso!'); carrinho.value = []; isCartOpen.value = false; };
 
-                const startDrag = (e) => { isDragging.value = true; window.addEventListener('mousemove', onDrag); window.addEventListener('mouseup', stopDrag); };
-                const onDrag = (e) => {
-                    if (!isDragging.value || !containerRef.value) return;
-                    const rect = containerRef.value.getBoundingClientRect();
-                    lensX.value = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
-                    lensY.value = Math.max(0, Math.min(rect.height, e.clientY - rect.top));
-                };
-                const stopDrag = () => { isDragging.value = false; window.removeEventListener('mousemove', onDrag); window.removeEventListener('mouseup', stopDrag); };
+        onMounted(() => {
+          if (containerRef.value) { const rect = containerRef.value.getBoundingClientRect(); lensX.value = rect.width / 2; lensY.value = rect.height / 2; }
+        });
 
-                const startTouchDrag = (e) => {
-                    if (e.touches.length === 1) { isDragging.value = true; window.addEventListener('touchmove', onTouchDrag, { passive: false }); window.addEventListener('touchend', stopTouchDrag); }
-                };
-                const onTouchDrag = (e) => {
-                    if (!isDragging.value || !containerRef.value) return;
-                    e.preventDefault();
-                    const rect = containerRef.value.getBoundingClientRect();
-                    lensX.value = Math.max(0, Math.min(rect.width, e.touches[0].clientX - rect.left));
-                    lensY.value = Math.max(0, Math.min(rect.height, e.touches[0].clientY - rect.top));
-                };
-                const stopTouchDrag = () => { isDragging.value = false; window.removeEventListener('touchmove', onTouchDrag); window.removeEventListener('touchend', stopTouchDrag); };
-                const handleTouchStart = (e) => { toggleLens(); e.preventDefault(); };
-
-                const lensStyle = computed(() => {
-                    if (!containerRef.value) return {};
-                    const rect = containerRef.value.getBoundingClientRect();
-                    const width = rect.width || 540; const height = rect.height || 540;
-                    return {
-                        left: `${lensX.value}px`, top: `${lensY.value}px`, transform: 'translate(-50%, -50%)',
-                        backgroundImage: `url('${acabamentoAtivo.value.imagem}')`, backgroundSize: `${width * 2.8}px ${height * 2.8}px`,
-                        backgroundPosition: `${(lensX.value / width) * 100}% ${(lensY.value / height) * 100}%`
-                    };
-                });
-
-                const formatMoney = (val) => Number(val || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-                const totalItensCarrinho = computed(() => carrinho.value.length);
-                const valorTotalCarrinho = computed(() => carrinho.value.reduce((acc, item) => acc + item.preco, 0));
-
-                const exibirNotificacao = (texto) => { mensagemSucesso.value = texto; setTimeout(() => { mensagemSucesso.value = ''; }, 3000); };
-                const adicionarAoCarrinho = (item) => { carrinho.value.push({ ...item, comCertificado: incluirCertificado.value }); exibirNotificacao(`Item adicionado Ã  sacola.`); };
-                const comprarAgora = (item) => { adicionarAoCarrinho(item); isCartOpen.value = true; };
-                const removerDoCarrinho = (index) => { carrinho.value.splice(index, 1); };
-                const finalizarCompra = () => { exibirNotificacao('Pedido processado com sucesso!'); carrinho.value = []; isCartOpen.value = false; };
-
-                onMounted(() => {
-                    if (containerRef.value) {
-                        const rect = containerRef.value.getBoundingClientRect();
-                        lensX.value = rect.width / 2; lensY.value = rect.height / 2;
-                    }
-                });
-
-                return { acabamentos, acabamentoAtivo, containerRef, isLensVisible, incluirCertificado, isCartOpen, carrinho, mensagemSucesso, lensStyle, totalItensCarrinho, valorTotalCarrinho, formatMoney, selecionarAcabamento, toggleLens, startDrag, startTouchDrag, handleTouchStart, adicionarAoCarrinho, comprarAgora, removerDoCarrinho, finalizarCompra };
-            }
-        }).mount('#app');
-    </script>
+        return { acabamentos, acabamentoAtivo, containerRef, isLensVisible, incluirCertificado, isCartOpen, carrinho, mensagemSucesso, lensStyle, totalItensCarrinho, valorTotalCarrinho, formatMoney, selecionarAcabamento, toggleLens, startDrag, startTouchDrag, handleTouchStart, adicionarAoCarrinho, comprarAgora, removerDoCarrinho, finalizarCompra };
+      }
+    }).mount('#app');
+  </script>
 </body>
 </html>
