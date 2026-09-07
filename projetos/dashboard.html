@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com https://fonts.googleapis.com https://fonts.gstatic.com; connect-src 'self' https://api.bcb.gov.br;">
-  <title>Dashboard financeiro preditivo e orçamento</title>
+  <title>Dashboard financeiro preditivo e or�amento</title>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -68,7 +68,7 @@
           <select v-model.number="horizonteMeses" class="w-full bg-[#050510] border border-indigo-500/30 rounded-xl p-2.5 sm:p-3 text-indigo-300 font-mono text-xs sm:text-sm focus:border-indigo-400 outline-none transition-all cursor-pointer">
             <option :value="1">1 m&ecirc;s</option><option :value="6">6 meses</option><option :value="12">1 ano</option><option :value="24">2 anos</option><option :value="60">5 anos</option>
           </select>
-          <p class="text-[10px] sm:text-xs text-indigo-400 mt-2 font-medium italic">👉 Voc&ecirc; confere o resultado logo abaixo/ao lado</p>
+          <p class="text-[10px] sm:text-xs text-indigo-400 mt-2 font-medium italic"> Voc&ecirc; confere o resultado logo abaixo/ao lado</p>
         </div>
         <div class="flex flex-col justify-center bg-[#050510] border border-slate-800/90 p-3 sm:p-3.5 rounded-xl">
           <span class="text-xs text-slate-400 block mb-1">Sobra salarial base:</span>
@@ -147,7 +147,6 @@
         <div>
           <h3 class="text-sm sm:text-base font-bold text-white mb-4">Lan&ccedil;amentos adicionais e parcelamentos</h3>
           
-          <!-- Formulário modificado para ficar ACIMA da tabela -->
           <div class="mb-5 pb-5 border-b border-slate-800/80">
             <form @submit.prevent="adicionarTransacao" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-2.5 sm:gap-3">
               <input v-model="novoItem.descricao" required type="text" placeholder="Descri&ccedil;&atilde;o" class="bg-[#050510] border border-slate-800 rounded-lg p-2.5 text-xs text-white focus:border-indigo-500 outline-none">
@@ -160,7 +159,6 @@
             </form>
           </div>
 
-          <!-- Tabela ABAIXO do formulário -->
           <div class="max-h-60 overflow-y-auto custom-scroll">
             <table class="w-full min-w-[500px] text-left text-xs text-slate-300">
               <thead class="bg-slate-900/60 text-slate-400 uppercase sticky top-0">
@@ -245,7 +243,6 @@
       setup() {
         const horizonteMeses = ref(12); const incluirCDINaEvolucao = ref(false); const apiStatus = ref('loading');
         
-        // CORREÇÃO: Padrões iniciais alterados de 6500 e 4200 para 0, para que nenhum valor fantasma seja somado
         const salarioBaseInput = ref(0); const despesaFixaBaseInput = ref(0);
         const valorAplicacaoCDI = ref(10000); const taxaCDIAnual = ref(10.75); const percentualCDI = ref(100);
         const transacoesAdicionais = ref([]);
@@ -334,7 +331,7 @@
 
         const planilhaProjecaoDinamica = computed(() => {
           const rotulosCompletos = [];
-          const mesesExtenso = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+          const mesesExtenso = ['Janeiro', 'Fevereiro', 'Mar�o', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
           let mes = 8; let ano = 2026;
           const limiteMeses = Number(horizonteMeses.value) || 12;
           
@@ -383,7 +380,7 @@
             transacoesAdicionais.value.push({ ...novoRegistro, id: idGerado });
             novoItem.value = { descricao: '', tipo: 'despesa', valor: '', categoria: 'Geral', mesesDuracao: 0 };
           } catch (e) {
-            console.error("Erro ao salvar transação:", e);
+            console.error("Erro ao salvar transa�o:", e);
           }
         };
         

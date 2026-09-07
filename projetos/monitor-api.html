@@ -97,8 +97,6 @@
 
     <div class="bg-[#0f0f23]/60 border border-slate-800/70 rounded-2xl p-4 sm:p-6 backdrop-blur-md">
       <h2 class="text-sm font-semibold text-slate-200 mb-4 flex items-center gap-2">Adicionar novo endpoint para monitoramento</h2>
-      
-      <!-- O atributo nativo onsubmit foi adicionado aqui associado à função window.handleAddEndpoint -->
       <form id="add-endpoint-form" onsubmit="window.handleAddEndpoint(event)" class="grid grid-cols-1 sm:grid-cols-12 gap-3">
         <div class="sm:col-span-4">
           <input type="text" id="input-name" required placeholder="Nome do servi&ccedil;o (ex: API Cloud)" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3.5 py-3 sm:py-2 text-xs sm:text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
@@ -285,7 +283,6 @@
       renderTable(); updateChartData();
     }
 
-    // CORREÇÃO: Função atrelada globalmente para ser encontrada pelo HTML onsubmit
     window.handleAddEndpoint = async function(e) {
       e.preventDefault();
       const nameInput = document.getElementById('input-name');
