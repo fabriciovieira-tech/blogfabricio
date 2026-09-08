@@ -79,7 +79,6 @@
       </div>
     </section>
 
-    <!-- Adiço do Título Total do Resultado e empacotamento dos cartes -->
     <section class="mt-2 space-y-4">
       <div class="flex items-center gap-2">
         <h2 class="text-base sm:text-lg font-bold text-white uppercase tracking-wider flex items-center gap-2">
@@ -157,14 +156,13 @@
           <h3 class="text-sm sm:text-base font-bold text-white mb-4">Lan&ccedil;amentos adicionais e parcelamentos</h3>
           
           <div class="mb-5 pb-5 border-b border-slate-800/80">
-            <!-- Retirado o comportamento padro de formulário e atrelado o evento manual ao boto para sanar falhas -->
             <form class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-2.5 sm:gap-3">
               <input v-model="novoItem.descricao" type="text" placeholder="Descri&ccedil;&atilde;o" class="bg-[#050510] border border-slate-800 rounded-lg p-2.5 text-xs text-white focus:border-indigo-500 outline-none">
               <select v-model="novoItem.tipo" class="bg-[#050510] border border-slate-800 rounded-lg p-2.5 text-xs text-white focus:border-indigo-500 outline-none">
                 <option value="despesa">Despesa</option><option value="salario">Sal&aacute;rio / extra</option>
               </select>
               <input v-model.number="novoItem.valor" type="number" min="0.01" step="0.01" placeholder="Valor (R$)" class="bg-[#050510] border border-slate-800 rounded-lg p-2.5 text-xs text-white focus:border-indigo-500 outline-none">
-              <input v-model.number="novoItem.mesesDuracao" type="number" min="0" max="60" placeholder="Meses (0=fixo)" class="bg-[#050510] border border-slate-800 rounded-lg p-2.5 text-xs text-amber-300 font-mono focus:border-amber-400 outline-none">
+              <input v-model.number="novoItem.mesesDuracao" type="number" min="0" max="60" placeholder="Parcela (0 = fixo)" class="bg-[#050510] border border-slate-800 rounded-lg p-2.5 text-xs text-amber-300 font-mono focus:border-amber-400 outline-none">
               <button type="button" @click="adicionarTransacao" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2.5 rounded-lg text-xs cursor-pointer">Adicionar</button>
             </form>
           </div>
@@ -192,7 +190,7 @@
       </div>
 
       <div class="bg-[#0c0c1e]/70 border border-slate-800/80 p-4 sm:p-6 rounded-2xl backdrop-blur-sm space-y-4">
-        <h3 class="text-sm sm:text-base font-bold text-white">Simulador CDI</h3>
+        <h3 class="text-sm sm:text-base font-bold text-white mb-4">Simulador CDI</h3>
         <div>
           <label class="text-xs text-slate-400 block mb-1.5 font-medium">Valor investido (R$)</label>
           <input v-model.number="valorAplicacaoCDI" @input="persistirConfiguracoesAssincrono" type="number" step="100" min="0" class="w-full bg-[#050510] border border-indigo-500/50 rounded-lg p-2.5 text-sm text-cyan-300 font-mono outline-none">
@@ -254,14 +252,14 @@
         const horizonteMeses = ref(12); const incluirCDINaEvolucao = ref(false); const apiStatus = ref('loading');
         
         const salarioBaseInput = ref(0); const despesaFixaBaseInput = ref(0);
-        const valorAplicacaoCDI = ref(10000); const taxaCDIAnual = ref(10.75); const percentualCDI = ref(100);
+        const valorAplicacaoCDI = ref(0); const taxaCDIAnual = ref(10.75); const percentualCDI = ref(100);
         const transacoesAdicionais = ref([]);
         const novoItem = ref({ descricao: '', tipo: 'despesa', valor: '', categoria: 'Geral', mesesDuracao: 0 });
 
         onMounted(async () => {
           salarioBaseInput.value = Number(await dbService.obterConfig('salarioBase', 0));
           despesaFixaBaseInput.value = Number(await dbService.obterConfig('despesaFixaBase', 0));
-          valorAplicacaoCDI.value = Number(await dbService.obterConfig('valorAplicacaoCDI', 10000));
+          valorAplicacaoCDI.value = Number(await dbService.obterConfig('valorAplicacaoCDI', 0));
           percentualCDI.value = Number(await dbService.obterConfig('percentualCDI', 100));
           horizonteMeses.value = Number(await dbService.obterConfig('horizonteMeses', 12));
           const transacoesSalvas = await dbService.obterTransacoes();
@@ -375,7 +373,6 @@
         const formatMoney = (val) => Number(val || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
         
         const adicionarTransacao = async () => {
-          // Implementaço de validaço explícita de campos antes da submisso
           if (!novoItem.value.descricao || novoItem.value.descricao.trim() === '') {
             alert('Por favor, informe a descriço do lançamento.');
             return;
@@ -397,7 +394,6 @@
             const idGerado = await dbService.salvarTransacao(novoRegistro);
             transacoesAdicionais.value.push({ ...novoRegistro, id: idGerado });
             
-            // Redefinindo propriedades manualmente para no quebrar o vínculo reativo no VUE
             novoItem.value.descricao = ''; 
             novoItem.value.tipo = 'despesa'; 
             novoItem.value.valor = ''; 
