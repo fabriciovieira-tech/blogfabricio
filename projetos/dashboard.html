@@ -68,7 +68,7 @@
           <select v-model.number="horizonteMeses" class="w-full bg-[#050510] border border-indigo-500/30 rounded-xl p-2.5 sm:p-3 text-indigo-300 font-mono text-xs sm:text-sm focus:border-indigo-400 outline-none transition-all cursor-pointer">
             <option :value="1">1 m&ecirc;s</option><option :value="6">6 meses</option><option :value="12">1 ano</option><option :value="24">2 anos</option><option :value="60">5 anos</option>
           </select>
-          <p class="text-[10px] sm:text-xs text-indigo-400 mt-2 font-medium italic"> Voc&ecirc; confere o resultado logo abaixo/ao lado</p>
+          <p class="text-[10px] sm:text-xs text-indigo-400 mt-2 font-medium italic"> Voc&ecirc; confere o resultado logo abaixo</p>
         </div>
         <div class="flex flex-col justify-center bg-[#050510] border border-slate-800/90 p-3 sm:p-3.5 rounded-xl">
           <span class="text-xs text-slate-400 block mb-1">Sobra salarial base:</span>
@@ -79,26 +79,35 @@
       </div>
     </section>
 
-    <section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
-      <div class="relative overflow-hidden bg-gradient-to-b from-[#0e1626]/80 to-[#0a0f1d]/80 border border-emerald-500/20 p-4 sm:p-5 rounded-2xl backdrop-blur-md shadow-lg">
-        <div class="flex items-center justify-between mb-2"><span class="text-xs font-medium text-slate-400">Sal&aacute;rio total</span></div>
-        <p class="text-xl sm:text-2xl font-bold text-emerald-400 font-mono tracking-tight">R$ {{ formatMoney(salarioTotalCalculado) }}</p>
-        <span class="text-[10px] text-slate-500 font-light mt-1 block">Renda base + extras</span>
+    <!-- Adiço do Título Total do Resultado e empacotamento dos cartes -->
+    <section class="mt-2 space-y-4">
+      <div class="flex items-center gap-2">
+        <h2 class="text-base sm:text-lg font-bold text-white uppercase tracking-wider flex items-center gap-2">
+          <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+          Total do Resultado
+        </h2>
       </div>
-      <div class="relative overflow-hidden bg-gradient-to-b from-[#1c101d]/80 to-[#120a14]/80 border border-rose-500/20 p-4 sm:p-5 rounded-2xl backdrop-blur-md shadow-lg">
-        <div class="flex items-center justify-between mb-2"><span class="text-xs font-medium text-slate-400">Despesas (m&ecirc;s 1)</span></div>
-        <p class="text-xl sm:text-2xl font-bold text-rose-400 font-mono tracking-tight">R$ {{ formatMoney(despesasMes1) }}</p>
-        <span class="text-[10px] text-slate-500 font-light mt-1 block">Fixas + parcelas</span>
-      </div>
-      <div class="relative overflow-hidden bg-gradient-to-b from-[#0a1826]/80 to-[#07101a]/80 border border-cyan-500/20 p-4 sm:p-5 rounded-2xl backdrop-blur-md shadow-lg">
-        <div class="flex items-center justify-between mb-2"><span class="text-xs font-medium text-slate-400">Sobra (m&ecirc;s 1)</span></div>
-        <p class="text-xl sm:text-2xl font-bold font-mono tracking-tight" :class="saldoMes1 >= 0 ? 'text-cyan-400' : 'text-rose-400'">R$ {{ formatMoney(saldoMes1) }}</p>
-        <span class="text-[10px] text-slate-500 font-light mt-1 block">L&iacute;quido no primeiro m&ecirc;s</span>
-      </div>
-      <div class="relative overflow-hidden bg-gradient-to-b from-[#141029]/80 to-[#0d0a1c]/80 border border-indigo-500/20 p-4 sm:p-5 rounded-2xl backdrop-blur-md shadow-lg">
-        <div class="flex items-center justify-between mb-2"><span class="text-xs font-medium text-slate-400">Patrim&ocirc;nio previsto</span></div>
-        <p class="text-xl sm:text-2xl font-bold text-indigo-400 font-mono tracking-tight">R$ {{ formatMoney(projecaoFinal) }}</p>
-        <span class="text-[10px] text-slate-500 font-light mt-1 block">{{ incluirCDINaEvolucao ? 'Com rendimentos CDI' : 'Sem rendimentos' }}</span>
+      <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
+        <div class="relative overflow-hidden bg-gradient-to-b from-[#0e1626]/80 to-[#0a0f1d]/80 border border-emerald-500/20 p-4 sm:p-5 rounded-2xl backdrop-blur-md shadow-lg">
+          <div class="flex items-center justify-between mb-2"><span class="text-xs font-medium text-slate-400">Sal&aacute;rio total</span></div>
+          <p class="text-xl sm:text-2xl font-bold text-emerald-400 font-mono tracking-tight">R$ {{ formatMoney(salarioTotalCalculado) }}</p>
+          <span class="text-[10px] text-slate-500 font-light mt-1 block">Renda base + extras</span>
+        </div>
+        <div class="relative overflow-hidden bg-gradient-to-b from-[#1c101d]/80 to-[#120a14]/80 border border-rose-500/20 p-4 sm:p-5 rounded-2xl backdrop-blur-md shadow-lg">
+          <div class="flex items-center justify-between mb-2"><span class="text-xs font-medium text-slate-400">Despesas (m&ecirc;s 1)</span></div>
+          <p class="text-xl sm:text-2xl font-bold text-rose-400 font-mono tracking-tight">R$ {{ formatMoney(despesasMes1) }}</p>
+          <span class="text-[10px] text-slate-500 font-light mt-1 block">Fixas + parcelas</span>
+        </div>
+        <div class="relative overflow-hidden bg-gradient-to-b from-[#0a1826]/80 to-[#07101a]/80 border border-cyan-500/20 p-4 sm:p-5 rounded-2xl backdrop-blur-md shadow-lg">
+          <div class="flex items-center justify-between mb-2"><span class="text-xs font-medium text-slate-400">Sobra (m&ecirc;s 1)</span></div>
+          <p class="text-xl sm:text-2xl font-bold font-mono tracking-tight" :class="saldoMes1 >= 0 ? 'text-cyan-400' : 'text-rose-400'">R$ {{ formatMoney(saldoMes1) }}</p>
+          <span class="text-[10px] text-slate-500 font-light mt-1 block">L&iacute;quido no primeiro m&ecirc;s</span>
+        </div>
+        <div class="relative overflow-hidden bg-gradient-to-b from-[#141029]/80 to-[#0d0a1c]/80 border border-indigo-500/20 p-4 sm:p-5 rounded-2xl backdrop-blur-md shadow-lg">
+          <div class="flex items-center justify-between mb-2"><span class="text-xs font-medium text-slate-400">Patrim&ocirc;nio previsto</span></div>
+          <p class="text-xl sm:text-2xl font-bold text-indigo-400 font-mono tracking-tight">R$ {{ formatMoney(projecaoFinal) }}</p>
+          <span class="text-[10px] text-slate-500 font-light mt-1 block">{{ incluirCDINaEvolucao ? 'Com rendimentos CDI' : 'Sem rendimentos' }}</span>
+        </div>
       </div>
     </section>
 
@@ -148,14 +157,15 @@
           <h3 class="text-sm sm:text-base font-bold text-white mb-4">Lan&ccedil;amentos adicionais e parcelamentos</h3>
           
           <div class="mb-5 pb-5 border-b border-slate-800/80">
-            <form @submit.prevent="adicionarTransacao" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-2.5 sm:gap-3">
-              <input v-model="novoItem.descricao" required type="text" placeholder="Descri&ccedil;&atilde;o" class="bg-[#050510] border border-slate-800 rounded-lg p-2.5 text-xs text-white focus:border-indigo-500 outline-none">
+            <!-- Retirado o comportamento padro de formulário e atrelado o evento manual ao boto para sanar falhas -->
+            <form class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-2.5 sm:gap-3">
+              <input v-model="novoItem.descricao" type="text" placeholder="Descri&ccedil;&atilde;o" class="bg-[#050510] border border-slate-800 rounded-lg p-2.5 text-xs text-white focus:border-indigo-500 outline-none">
               <select v-model="novoItem.tipo" class="bg-[#050510] border border-slate-800 rounded-lg p-2.5 text-xs text-white focus:border-indigo-500 outline-none">
                 <option value="despesa">Despesa</option><option value="salario">Sal&aacute;rio / extra</option>
               </select>
-              <input v-model.number="novoItem.valor" required min="0.01" type="number" step="0.01" placeholder="Valor (R$)" class="bg-[#050510] border border-slate-800 rounded-lg p-2.5 text-xs text-white focus:border-indigo-500 outline-none">
+              <input v-model.number="novoItem.valor" type="number" min="0.01" step="0.01" placeholder="Valor (R$)" class="bg-[#050510] border border-slate-800 rounded-lg p-2.5 text-xs text-white focus:border-indigo-500 outline-none">
               <input v-model.number="novoItem.mesesDuracao" type="number" min="0" max="60" placeholder="Meses (0=fixo)" class="bg-[#050510] border border-slate-800 rounded-lg p-2.5 text-xs text-amber-300 font-mono focus:border-amber-400 outline-none">
-              <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2.5 rounded-lg text-xs cursor-pointer">Adicionar</button>
+              <button type="button" @click="adicionarTransacao" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2.5 rounded-lg text-xs cursor-pointer">Adicionar</button>
             </form>
           </div>
 
@@ -365,10 +375,18 @@
         const formatMoney = (val) => Number(val || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
         
         const adicionarTransacao = async () => {
-          if (!novoItem.value.descricao || !novoItem.value.valor) return;
-          
+          // Implementaço de validaço explícita de campos antes da submisso
+          if (!novoItem.value.descricao || novoItem.value.descricao.trim() === '') {
+            alert('Por favor, informe a descriço do lançamento.');
+            return;
+          }
+          if (!novoItem.value.valor || Number(novoItem.value.valor) <= 0) {
+            alert('Por favor, informe um valor válido maior que zero.');
+            return;
+          }
+
           const novoRegistro = { 
-            descricao: novoItem.value.descricao, 
+            descricao: novoItem.value.descricao.trim(), 
             tipo: novoItem.value.tipo, 
             valor: Number(novoItem.value.valor) || 0, 
             categoria: 'Adicionado', 
@@ -378,9 +396,15 @@
           try {
             const idGerado = await dbService.salvarTransacao(novoRegistro);
             transacoesAdicionais.value.push({ ...novoRegistro, id: idGerado });
-            novoItem.value = { descricao: '', tipo: 'despesa', valor: '', categoria: 'Geral', mesesDuracao: 0 };
+            
+            // Redefinindo propriedades manualmente para no quebrar o vínculo reativo no VUE
+            novoItem.value.descricao = ''; 
+            novoItem.value.tipo = 'despesa'; 
+            novoItem.value.valor = ''; 
+            novoItem.value.mesesDuracao = 0;
           } catch (e) {
             console.error("Erro ao salvar transaço:", e);
+            alert('Ocorreu um erro interno ao salvar o lançamento.');
           }
         };
         
