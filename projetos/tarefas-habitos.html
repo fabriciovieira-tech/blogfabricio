@@ -48,12 +48,15 @@
     </section>
 
     <div class="bg-[#0c0c1e]/70 border border-slate-800/80 p-5 sm:p-6 rounded-2xl backdrop-blur-sm">
-      <form @submit.prevent="addHabito" class="flex flex-col sm:flex-row gap-3">
-        <input v-model="novoHabito" required type="text" placeholder="Qual h&aacute;bito voc&ecirc; deseja construir?" class="flex-1 bg-[#050510] border border-slate-700 rounded-xl px-4 py-3 sm:py-3.5 text-sm sm:text-base text-slate-200 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all">
-        <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-3 sm:py-3.5 rounded-xl font-medium text-sm sm:text-base cursor-pointer transition-colors whitespace-nowrap shadow-lg shadow-emerald-900/20">
+      <!-- Retirado a tag <form> que poderia causar falha por submissão silenciosa -->
+      <div class="flex flex-col sm:flex-row gap-3">
+        <!-- Evento keyup.enter emula o form de forma 100% segura pelo vue -->
+        <input v-model="novoHabito" @keyup.enter="addHabito" type="text" placeholder="Qual h&aacute;bito voc&ecirc; deseja construir?" class="flex-1 bg-[#050510] border border-slate-700 rounded-xl px-4 py-3 sm:py-3.5 text-sm sm:text-base text-slate-200 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all">
+        <!-- Definido explicitamente type="button" -->
+        <button type="button" @click="addHabito" class="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-3 sm:py-3.5 rounded-xl font-medium text-sm sm:text-base cursor-pointer transition-colors whitespace-nowrap shadow-lg shadow-emerald-900/20">
           Criar h&aacute;bito
         </button>
-      </form>
+      </div>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
@@ -100,8 +103,9 @@
   </button>
 
   <script>
-    const db = new Dexie('RastreadorHabitosDB');
-    db.version(2).stores({ habitos: '++id, nome, streak, lastDate, *historicoDatas' });
+    // Nome do banco de dados alterado para forçar uma instância limpa, ignorando conflitos de versões anteriores no IndexedDB do navegador
+    const db = new Dexie('RastreadorHabitosDB2');
+    db.version(1).stores({ habitos: '++id, nome, streak, lastDate' });
 
     const { createApp, ref, computed, onMounted } = Vue;
 
@@ -139,30 +143,34 @@
         });
 
         const carregarHabitos = async () => {
-          let dados = await db.habitos.toArray();
-          
-          if (dados.length === 0) {
-            const hojeIso = formatarDataIso(getHoje());
-            const ontemIso = formatarDataIso(getHoje() - 86400000);
+          try {
+            let dados = await db.habitos.toArray();
             
-            await db.habitos.add({ 
-              nome: 'Caminhada matinal', 
-              streak: 2, 
-              lastDate: getHoje(), 
-              historicoDatas: [ontemIso, hojeIso] 
-            });
-            await db.habitos.add({ 
-              nome: 'Leitura t\u00e9cnica', 
-              streak: 0, 
-              lastDate: null, 
-              historicoDatas: [] 
-            });
+            if (dados.length === 0) {
+              const hojeIso = formatarDataIso(getHoje());
+              const ontemIso = formatarDataIso(getHoje() - 86400000);
+              
+              await db.habitos.add({ 
+                nome: 'Caminhada matinal', 
+                streak: 2, 
+                lastDate: getHoje(), 
+                historicoDatas: [ontemIso, hojeIso] 
+              });
+              await db.habitos.add({ 
+                nome: 'Leitura t\u00e9cnica', 
+                streak: 0, 
+                lastDate: null, 
+                historicoDatas: [] 
+              });
+              
+              dados = await db.habitos.toArray();
+            }
             
-            dados = await db.habitos.toArray();
+            habitos.value = dados;
+            verificarStreaks();
+          } catch (e) {
+            console.error('Falha ao carregar hábitos do IndexedDB', e);
           }
-          
-          habitos.value = dados;
-          verificarStreaks();
         };
 
         const verificarStreaks = async () => {
@@ -196,6 +204,7 @@
               novoHabito.value = '';
             } catch (e) {
               console.error('Erro ao adicionar hábito:', e);
+              alert('Erro ao salvar o hábito no banco de dados local.');
             }
           }
         };
