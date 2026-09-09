@@ -97,17 +97,20 @@
 
     <div class="bg-[#0f0f23]/60 border border-slate-800/70 rounded-2xl p-4 sm:p-6 backdrop-blur-md">
       <h2 class="text-sm font-semibold text-slate-200 mb-4 flex items-center gap-2">Adicionar novo endpoint para monitoramento</h2>
-      <form id="add-endpoint-form" onsubmit="window.handleAddEndpoint(event)" class="grid grid-cols-1 sm:grid-cols-12 gap-3">
+      
+      <!-- Transformado de <form> para <div> para eliminar 100% de chance de reload indesejado -->
+      <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
         <div class="sm:col-span-4">
-          <input type="text" id="input-name" required placeholder="Nome do servi&ccedil;o (ex: API Cloud)" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3.5 py-3 sm:py-2 text-xs sm:text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
+          <input type="text" id="input-name" onkeypress="if(event.key === 'Enter') handleAddEndpoint()" placeholder="Nome do servi&ccedil;o (ex: API Cloud)" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3.5 py-3 sm:py-2 text-xs sm:text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
         </div>
         <div class="sm:col-span-6">
-          <input type="url" id="input-url" required placeholder="Endere&ccedil;o URL (ex: https://api.github.com)" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3.5 py-3 sm:py-2 text-xs sm:text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
+          <input type="url" id="input-url" onkeypress="if(event.key === 'Enter') handleAddEndpoint()" placeholder="Endere&ccedil;o URL (ex: https://api.github.com)" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3.5 py-3 sm:py-2 text-xs sm:text-sm text-slate-200 focus:outline-none focus:border-indigo-500">
         </div>
         <div class="sm:col-span-2">
-          <button type="submit" class="w-full py-3 sm:py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs sm:text-sm rounded-lg transition-all cursor-pointer">Testar</button>
+          <!-- Botão como type="button" chamando a função explicitamente no clique -->
+          <button type="button" onclick="handleAddEndpoint()" class="w-full py-3 sm:py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs sm:text-sm rounded-lg transition-all cursor-pointer">Testar</button>
         </div>
-      </form>
+      </div>
     </div>
 
     <div class="bg-[#0f0f23]/80 border border-slate-800/80 rounded-2xl p-4 sm:p-6 backdrop-blur-md">
@@ -283,14 +286,17 @@
       renderTable(); updateChartData();
     }
 
-    window.handleAddEndpoint = async function(e) {
-      e.preventDefault();
+    // Função exposta no escopo window e ativada diretamente via onclick e onkeypress
+    window.handleAddEndpoint = async function() {
       const nameInput = document.getElementById('input-name');
       const urlInput = document.getElementById('input-url');
       const name = nameInput.value.trim(); 
       const rawUrl = urlInput.value.trim();
       
-      if (!name || !rawUrl) return;
+      if (!name || !rawUrl) {
+        alert("Preencha o Nome e o Endereço URL corretamente.");
+        return;
+      }
       
       const newEp = { id: Date.now().toString(), name: name, url: normalizeUrl(rawUrl), currentLatency: 0, minLatency: 0, maxLatency: 0, totalChecks: 0, failedChecks: 0, history: [], active: true };
       endpoints.push(newEp);
