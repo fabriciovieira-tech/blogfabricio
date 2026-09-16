@@ -1,6 +1,6 @@
 # 🚀 Projeto - Blog & Portfólio de Fabricio Vieira
 
-Bem-vindo ao repositório do portal **Serra Tecnologia**, um ambiente web moderno, dinâmico e responsivo desenvolvido para apresentar projetos interativos, dashboards de alta performance, experimentos visuais em WebGL e artigos técnicos originais.
+Bem-vindo ao repositório do portal **Blog FB**, um ambiente web moderno, dinâmico e responsivo desenvolvido para apresentar projetos interativos, dashboards de alta performance, experimentos visuais em WebGL e artigos técnicos originais.
 
 O projeto foi arquitetado com foco em performance, experiência do usuário (UX) e design limpo, unindo aplicações dinâmicas e leituras imersivas em um único ecossistema.
 
