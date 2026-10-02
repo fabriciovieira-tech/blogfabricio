@@ -1,0 +1,159 @@
+<article class="space-y-6 text-slate-300 font-light leading-relaxed">
+    
+    <!-- Subtítulo / Introdução -->
+    <p class="text-base md:text-lg text-slate-200 font-normal leading-relaxed border-l-2 border-indigo-500 pl-4 py-1">
+        Guias, estratégias e padrões arquitetônicos para escalar aplicações web modernas.
+    </p>
+
+    <p>
+        À medida que as aplicações web crescem em tamanho e complexidade, torna-se cada vez mais importante organizar o código de forma que facilite sua manutenção, escalabilidade e evolução. Em sistemas desenvolvidos por equipes multidisciplinares, uma arquitetura bem definida reduz conflitos entre desenvolvedores, melhora a reutilização de componentes e acelera a entrega de novas funcionalidades.
+    </p>
+
+    <p>
+        Nesse contexto, duas práticas têm ganhado destaque no desenvolvimento frontend moderno: a estruturação adequada de subpáginas e a arquitetura de Micro-Frontends. Enquanto a primeira organiza a navegação e a separação lógica das funcionalidades, a segunda permite dividir uma aplicação em módulos independentes, possibilitando que diferentes equipes trabalhem de forma paralela e com maior autonomia.
+    </p>
+
+    <!-- IMAGEM 1: Conceito de Arquitetura & Estrutura -->
+    <figure class="my-8">
+        <img 
+            src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80" 
+            alt="Código e estrutura de arquitetura de software frontend" 
+            class="w-full h-64 md:h-80 object-cover rounded-xl border border-slate-800/80 shadow-lg"
+        />
+        <figcaption class="text-xs text-slate-500 text-center mt-2 italic">
+            Figura 1: A organização limpa do código e a separação por módulos são a base para sistemas frontend sustentáveis.
+        </figcaption>
+    </figure>
+
+    <!-- O que são e por que estruturar Subpáginas -->
+    <h3 class="text-xl md:text-2xl font-bold text-white pt-4 pb-2 border-b border-slate-800">
+        Estruturação de Subpáginas
+    </h3>
+
+    <p>
+        Subpáginas são páginas internas de uma aplicação que representam funcionalidades ou áreas específicas do sistema, acessadas por meio de rotas claras. Elas dividem responsabilidades, evitando que a lógica fique concentrada em um único local.
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+        <div class="bg-[#0f0f23]/60 border border-slate-800/80 rounded-xl p-5">
+            <h4 class="text-lg font-bold text-cyan-400 mb-2">Exemplos Práticos</h4>
+            <ul class="text-sm space-y-1 text-slate-300">
+                <li>• Página inicial / Catálogo</li>
+                <li>• Carrinho de compras</li>
+                <li>• Área do cliente &amp; Pedidos</li>
+                <li>• Configurações da conta</li>
+            </ul>
+        </div>
+
+        <div class="bg-[#0f0f23]/60 border border-slate-800/80 rounded-xl p-5">
+            <h4 class="text-lg font-bold text-purple-400 mb-2">Principais Benefícios</h4>
+            <ul class="text-sm space-y-1 text-slate-300">
+                <li>• Facilidade de manutenção e testes</li>
+                <li>• Reutilização eficiente de componentes</li>
+                <li>• Escalabilidade do projeto</li>
+                <li>• Melhoria na UX de navegação</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Boas práticas -->
+    <h3 class="text-xl md:text-2xl font-bold text-white pt-4 pb-2 border-b border-slate-800">
+        Boas Práticas na Organização
+    </h3>
+
+    <div class="space-y-4 my-4">
+        <div class="bg-[#0a0a16] border border-slate-800/60 p-4 rounded-xl">
+            <h4 class="text-base font-bold text-slate-100 mb-1 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+                Organização por Domínio / Funcionalidade
+            </h4>
+            <p class="text-sm text-slate-400 mb-2">Em vez de agrupar por tipo de arquivo, agrupa-se os recursos pelas áreas de negócio.</p>
+            <pre class="bg-[#060613] p-3 rounded text-xs font-mono text-indigo-300 overflow-x-auto border border-slate-900">
+/clientes (ClienteList.jsx, ClienteForm.jsx, ClienteService.js)
+/produtos (ProdutoList.jsx, ProdutoForm.jsx, ProdutoService.js)</pre>
+        </div>
+
+        <div class="bg-[#0a0a16] border border-slate-800/60 p-4 rounded-xl">
+            <h4 class="text-base font-bold text-slate-100 mb-1 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+                Rotas Padronizadas &amp; Componentização
+            </h4>
+            <p class="text-sm text-slate-400">Utilize caminhos limpos (ex: <code class="text-cyan-300">/clientes/123</code>) e isole elementos globais (menus, botões e tabelas) em componentes reutilizáveis para evitar duplicação.</p>
+        </div>
+
+        <div class="bg-[#0a0a16] border border-slate-800/60 p-4 rounded-xl">
+            <h4 class="text-base font-bold text-slate-100 mb-1 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-purple-400"></span>
+                Separação entre Interface e Lógica
+            </h4>
+            <p class="text-sm text-slate-400">Mantenha a camada visual isolada dos serviços HTTP e regras de negócio. Isso garante um código mais limpo e testável.</p>
+        </div>
+    </div>
+
+    <!-- IMAGEM 2: Representação de Módulos & Micro-Frontends -->
+    <figure class="my-8">
+        <img 
+            src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80" 
+            alt="Painéis e dashboards modulares representando Micro-Frontends" 
+            class="w-full h-64 md:h-80 object-cover rounded-xl border border-slate-800/80 shadow-lg"
+        />
+        <figcaption class="text-xs text-slate-500 text-center mt-2 italic">
+            Figura 2: Na arquitetura de Micro-Frontends, cada funcionalidade (como pagamentos, gráficos ou suporte) atua como uma aplicação independente.
+        </figcaption>
+    </figure>
+
+    <!-- Micro-Frontends -->
+    <h3 class="text-xl md:text-2xl font-bold text-white pt-4 pb-2 border-b border-slate-800">
+        O que são Micro-Frontends?
+    </h3>
+
+    <p>
+        Micro-Frontends aplicam os princípios de microsserviços ao frontend. A aplicação deixa de ser um monolito e passa a ser composta por pequenos módulos independentes, cada um com sua equipe, pipeline de deploy e ciclo de vida.
+    </p>
+
+    <div class="bg-[#0f0f23]/80 border border-slate-800/80 rounded-xl p-5 my-6 backdrop-blur-sm">
+        <p class="text-sm text-slate-300 italic">
+            "Em uma plataforma financeira com Micro-Frontends, a equipe de pagamentos pode lançar novos métodos e a equipe de investimentos atualizar seus gráficos sem que uma dependa ou trave o deploy da outra."
+        </p>
+    </div>
+
+    <h3 class="text-xl md:text-2xl font-bold text-white pt-4 pb-2 border-b border-slate-800">
+        Vantagens e Cuidados na Adoção
+    </h3>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-4">
+        <div class="bg-[#0a0a16] border border-slate-800/60 p-4 rounded-xl">
+            <h4 class="text-base font-bold text-emerald-400 mb-2">Vantagens</h4>
+            <ul class="text-xs space-y-1.5 text-slate-300">
+                <li>✔ Maior escalabilidade e autonomia</li>
+                <li>✔ Menor risco em implantações (deploys)</li>
+                <li>✔ Isolamento de falhas e manutenção simplificada</li>
+                <li>✔ Evolução tecnológica gradual</li>
+            </ul>
+        </div>
+
+        <div class="bg-[#0a0a16] border border-slate-800/60 p-4 rounded-xl">
+            <h4 class="text-base font-bold text-amber-400 mb-2">Pontos de Atenção</h4>
+            <ul class="text-xs space-y-1.5 text-slate-300">
+                <li>⚠ Padronização da identidade visual</li>
+                <li>⚠ Gerenciamento de dependências e libs</li>
+                <li>⚠ Comunicação e autenticação entre módulos</li>
+                <li>⚠ Complexidade operacional inicial</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Conclusão -->
+    <h3 class="text-xl md:text-2xl font-bold text-white pt-4 pb-2 border-b border-slate-800">
+        Conclusão
+    </h3>
+
+    <p>
+        A decisão de adotar Micro-Frontends deve ser pautada pelo tamanho da aplicação e pela quantidade de equipes envolvidas. Para projetos menores ou com um único time, um monolito bem organizado com boa estrutura de subpáginas é mais eficiente e simples de manter.
+    </p>
+
+    <p>
+        Em ecossistemas corporativos complexos, essa abordagem descentralizada minimiza o acoplamento, acelera o ciclo de desenvolvimento e garante a longevidade da arquitetura de software.
+    </p>
+
+</article>
